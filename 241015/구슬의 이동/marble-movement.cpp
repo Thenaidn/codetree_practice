@@ -8,7 +8,7 @@ using namespace std;
 int a, b, t, k;
 int dy[4] = { 0, -1, 0, 1 };
 int dx[4] = { -1, 0, 1, 0 };
-vector<tuple<int, int, int, int>> balls; // (y, x, 방향, 속도)
+vector<tuple<int, int, int, int, int>> balls; // (y, x, 방향, 속도)
 int maps[51][51];
 
 bool isinside(int y, int x) {
@@ -17,8 +17,10 @@ bool isinside(int y, int x) {
 bool compareb(int a, int b) {
     int speedA = get<3>(balls[a]);
     int speedB = get<3>(balls[b]);
+    int numA = get<4>(balls[a]);
+    int numB = get<4>(balls[b]);
     if (speedA == speedB) {
-        return a > b;
+        return numA > numB;
     }
     return speedA > speedB;
 }
@@ -31,15 +33,15 @@ void removeBalls() {
         pos[y * a + x].push_back(i);
     }
 
-    vector<tuple<int, int, int, int>> new_balls; 
+    vector<tuple<int, int, int, int, int>> new_balls; 
     for (auto& entry : pos) {
         if (entry.second.size() > k) {
 
             vector<int> indices = entry.second;
 
             sort(indices.begin(), indices.end(), compareb);
-            indices.resize(k); 
-            for (int i = 0; i < indices.size(); i++) {
+ 
+            for (int i = 0; i < k; i++) {
                 new_balls.push_back(balls[indices[i]]);
             }
         }
@@ -66,15 +68,16 @@ int main() {
         cin >> y >> x >> d >> v;
         x--; y--;
         int dir = (d == 'L') ? 0 : (d == 'U') ? 1 : (d == 'R') ? 2 : 3;
-        balls.push_back(make_tuple(y, x, dir, v)); 
+        balls.push_back(make_tuple(y, x, dir, v, i + 1)); 
         maps[y][x]++;
     }
 
-    for (int time = 0; time < a * 2; time++) {
+    for (int time = 0; time < t; time++) {
 
         for (int i = 0; i < balls.size(); i++) {
-            int y, x, dir, speed;
-            tie(y, x, dir, speed) = balls[i];
+            int y, x, dir, speed, num;
+
+            tie(y, x, dir, speed, num) = balls[i];
             for (int step = 0; step < speed; step++) {
                 int nx = x + dx[dir];
                 int ny = y + dy[dir];
@@ -88,7 +91,7 @@ int main() {
                 y = ny;
                 maps[y][x]++;
             }
-            balls[i] = make_tuple(y, x, dir, speed);
+            balls[i] = make_tuple(y, x, dir, speed, num);
         }
 
         removeBalls();

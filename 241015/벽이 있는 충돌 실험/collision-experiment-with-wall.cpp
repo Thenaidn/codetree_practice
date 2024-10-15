@@ -10,60 +10,30 @@ using namespace std;
 
 
 int a, b, c, d, e;
-int dy[4] = { 0, 0, -1, 1 }; // L, R, U, D
-int dx[4] = { -1, 1, 0, 0 };
-vector<pair<int, int>> balls;
+int dy[4] = { 0, -1, 0, 1 };
+int dx[4] = { -1, 0, 1, 0 };
+vector<tuple<int, int, int>> balls;
 vector<int> dirs;
+
+int maps[1111][1111];
 
 bool isinside(int y, int x) {
     return x >= 0 && x < a && y >= 0 && y < a;
 }
 
-void move_balls() {
-    unordered_map<int, vector<int>> np; 
-    vector<int> rm;
-
+void remove() {
+    vector<tuple<int, int, int>> new_balls;
     for (int i = 0; i < balls.size(); i++) {
-        int x = balls[i].first;
-        int y = balls[i].second;
-        int dir = dirs[i];
-
-        int nx = x + dx[dir];
-        int ny = y + dy[dir];
-
-        if (!isinside(ny, nx)) {
-            if (dir == 0) dirs[i] = 1; // L -> R
-            else if (dir == 1) dirs[i] = 0; // R -> L
-            else if (dir == 2) dirs[i] = 3; // U -> D
-            else if (dir == 3) dirs[i] = 2; // D -> U
-
-            nx = x;
-            ny = y;
+        int y = get<0>(balls[i]);
+        int x = get<1>(balls[i]);
+        if (maps[y][x] == 1) {
+            new_balls.push_back(balls[i]);
         }
-
-
-        np[ny * a + nx].push_back(i);
-    }
-
-
-    vector<pair<int, int>> remain;
-    vector<int> remaindir;
-
-    for (auto& p : np) {
-        vector<int>& ids = p.second;
-        if (ids.size() == 1) { 
-            int id = ids[0];
-            int nx = p.first % a;
-            int ny = p.first / a;
-            remain.push_back({ nx, ny });
-            remaindir.push_back(dirs[id]);
+        else {
+            maps[y][x] = 0; 
         }
-
     }
-
-
-    balls = remain;
-    dirs = remaindir;
+    balls = new_balls;
 }
 
 int main() {
@@ -73,26 +43,53 @@ int main() {
     int t;
     cin >> t;
     for (int ii = 0; ii < t; ii++) {
+
         cin >> a >> b;
 
-        balls.clear();
-        dirs.clear();
+        balls.clear(); 
 
-        for (int i = 0; i < b; i++) {
-            char dir;
-            cin >> c >> d >> dir;
-            c--; d--;
-
-            balls.push_back({ d, c });
-            if (dir == 'L') dirs.push_back(0);
-            else if (dir == 'R') dirs.push_back(1);
-            else if (dir == 'U') dirs.push_back(2);
-            else if (dir == 'D') dirs.push_back(3);
+        for (int i = 0; i < a; ++i) {
+            for (int j = 0; j < a; ++j) {
+                maps[i][j] = 0;
+            }
         }
 
 
+        for (int i = 0; i < b; ++i) {
+            int x, y;
+            char d;
+            cin >> y >> x >> d;
+            x--; y--;
+            if (d == 'L') balls.push_back(make_tuple(y, x, 0));
+            if (d == 'U') balls.push_back(make_tuple(y, x, 1));
+            if (d == 'R') balls.push_back(make_tuple(y, x, 2));
+            if (d == 'D') balls.push_back(make_tuple(y, x, 3));
+            maps[y][x] = 1;
+        }
+        
+
+
         for (int i = 0; i < 2 * a; i++) {
-            move_balls();
+            for (int i = 0; i < balls.size(); i++) {
+                int y, x, dir;
+                tie(y, x, dir) = balls[i];
+
+                int nx = x + dx[dir];
+                int ny = y + dy[dir];
+
+                if (!isinside(ny, nx)) {
+                    dir = (dir + 2) % 4; 
+                }
+                else {
+                    maps[y][x]--; 
+                    x = nx;  
+                    y = ny;
+                    maps[y][x]++; 
+                }
+
+                balls[i] = make_tuple(y, x, dir);
+            }
+            remove(); 
         }
 
         cout << balls.size() << endl;

@@ -5,75 +5,71 @@
 #include <climits>
 #include <string>
 #include <cmath>
+#include <unordered_map>
 using namespace std;
 
 
 
 int a, b, c, d, e;
-int maps[1111][1111] = { 0 };
-int balls[1111][1111] = { 0 };
-int dirs[1111][1111] = { 11, };
-int tmp[1111][1111] = { 0, };
-int tmpdirs[1111][1111] = { 11, };
 int dy[8] = { 0, 0, -1, 1,1,-1,1,-1 };
 int dx[8] = { -1, 1, 0, 0,-1,1,1,-1 };
 int res = 0;
 
-
+vector<pair<int, int>> balls;
+vector<int> dirs;
 
 bool isinside(int y, int x) {
     return x >= 0 && x < a && y >= 0 && y < a;
 }
 
+void move_balls() {
+    unordered_map<int, vector<int>> next_positions;
+    vector<int> to_remove;
 
-int cnt = 1;
 
-void move(int y, int x, int dir) {
-    int nx, ny;
-    nx = x + dx[dir];
-    ny = y + dy[dir];
+    for (int i = 0; i < balls.size(); i++) {
+        int x = balls[i].first;
+        int y = balls[i].second;
+        int dir = dirs[i];
 
-    if (!isinside(ny, nx)) {
-        tmp[y][x]++;
-        if (dirs[y][x] == 0) { tmpdirs[y][x] = 1; }
-        else if (dirs[y][x] == 1) { tmpdirs[y][x] = 0; }
-        else if (dirs[y][x] == 2) { tmpdirs[y][x] = 3; }
-        else if (dirs[y][x] == 3) { tmpdirs[y][x] = 2; }
+
+        int nx = x + dx[dir];
+        int ny = y + dy[dir];
+
+        if (!isinside(ny, nx)) {
+            if (dir == 0) dirs[i] = 1; // L -> R
+            else if (dir == 1) dirs[i] = 0; // R -> L
+            else if (dir == 2) dirs[i] = 3; // U -> D
+            else if (dir == 3) dirs[i] = 2; // D -> U
+
+            nx = x;
+            ny = y;
+        }
+
+        next_positions[ny * a + nx].push_back(i);
     }
-    else {
-        tmp[ny][nx]++;
-        tmpdirs[ny][nx] = dir;
-    }
-    
 
-}
+    // 충돌 처리
+    for (auto& p : next_positions) {
+        vector<int>& ids = p.second;
+        if (ids.size() > 1) {
 
-void turn() {
-
-    for (int i = 0; i < a; i++) {
-        for (int j = 0; j < a; j++) {
-            if (balls[i][j] == 1) {
-                move(i, j, dirs[i][j]);
+            for (int id : ids) {
+                to_remove.push_back(id);
             }
         }
-    }
+        else {
 
-    for (int i = 0; i < a; i++) {
-        for (int j = 0; j < a; j++) {
-            if (tmp[i][j] > 1) {
-                tmp[i][j] = 0;
-                tmpdirs[i][j] = 11;
-            }
+            int id = ids[0];
+            int nx = p.first % a;
+            int ny = p.first / a;
+            balls[id] = { nx, ny };
         }
     }
 
-    for (int i = 0; i < a; i++) {
-        for (int j = 0; j < a; j++) {
-            balls[i][j] = tmp[i][j];
-            dirs[i][j] = tmpdirs[i][j];
-            tmp[i][j] = 0;
-            tmpdirs[i][j] = 11;
-        }
+    for (int i = to_remove.size() - 1; i >= 0; i--) {
+        balls.erase(balls.begin() + to_remove[i]);
+        dirs.erase(dirs.begin() + to_remove[i]);
     }
 }
 
@@ -84,60 +80,31 @@ int main() {
     int t;
     cin >> t;
     for (int ii = 0; ii < t; ii++) {
-
-        
-
         cin >> a >> b;
-        for (int i = 0; i < a; i++) {
-            for (int j = 0; j < a; j++) {
-                //cin >> maps[i][j];
-                maps[i][j] = 0;
-            }
-        }
 
-        for (int i = 0; i < a; i++) {
-            for (int j = 0; j < a; j++) {
-                tmpdirs[i][j] = 11;
-                dirs[i][j] = tmpdirs[i][j];
-                balls[i][j] = 0;
-            }
-        }
+        balls.clear();
+        dirs.clear();
+
         for (int i = 0; i < b; i++) {
             char dir;
             cin >> c >> d >> dir;
-            c--; d--;
-            balls[c][d] = 1;
-            if (dir == 'L') {
-                dirs[c][d] = 0;
-            }
-            else if (dir == 'R') {
-                dirs[c][d] = 1;
-            }
-            else if (dir == 'U') {
-                dirs[c][d] = 2;
-            }
-            else if (dir == 'D') {
-                dirs[c][d] = 3;
-            }
+            c--; d--; 
+
+            balls.push_back({ d, c });
+            if (dir == 'L') dirs.push_back(0);
+            else if (dir == 'R') dirs.push_back(1);
+            else if (dir == 'U') dirs.push_back(2);
+            else if (dir == 'D') dirs.push_back(3);
         }
 
-        for (int i = 0; i < 4 * a * a; i++) {
-            turn();
+
+        for (int i = 0; i < 4 * a; i++) {
+            move_balls();
         }
 
-        for (int i = 0; i < a; i++) {
-            for (int j = 0; j < a; j++) {
-                if (dirs[i][j] != 11) {
-                    {
-                        res++;
-                    }
-                }
-            }
 
-
-        }
-        cout << res << endl;
-        res = 0;
+        cout << balls.size() << endl;
     }
+
     return 0;
 }

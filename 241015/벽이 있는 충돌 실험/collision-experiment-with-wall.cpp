@@ -67,9 +67,10 @@ void move_balls() {
         }
     }
 
-    for (int i = to_remove.size() - 1; i >= 0; i--) {
-        balls.erase(balls.begin() + to_remove[i]);
-        dirs.erase(dirs.begin() + to_remove[i]);
+    sort(to_remove.rbegin(), to_remove.rend());
+    for (int id : to_remove) {
+        balls.erase(balls.begin() + id);
+        dirs.erase(dirs.begin() + id);
     }
 }
 

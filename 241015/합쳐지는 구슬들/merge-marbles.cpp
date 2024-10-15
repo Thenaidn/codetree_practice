@@ -38,16 +38,21 @@ void removeBalls() {
         if (entry.second.size() > k) {
 
             vector<int> indices = entry.second;
-            int maxnum = 0;
+            int maxnum = -1;
             int weightsum = 0;
+            int tmpdir = get<2>(balls[indices[0]]);
 
             for (int i = 0; i < entry.second.size(); i++) {
-                maxnum = max(maxnum, get<4>(balls[entry.second[i]]));
+                if (maxnum < get<4>(balls[entry.second[i]])) {
+                    maxnum = get<4>(balls[entry.second[i]]);
+                    tmpdir = get<2>(balls[entry.second[i]]);
+                }
+                
                 weightsum += get<3>(balls[entry.second[i]]);
             }
             tuple<int, int, int, int, int > newball =
                 make_tuple(get<0>(balls[indices[0]]), get<1>(balls[indices[0]]), 
-                    get<2>(balls[indices[0]]), weightsum, maxnum);
+                    tmpdir, weightsum, maxnum);
 
             new_balls.push_back(newball);
         }
@@ -82,7 +87,7 @@ int main() {
     for (int time = 0; time < t; time++) {
 
         for (int i = 0; i < balls.size(); i++) {
-            int y, x, dir, weight, num;
+            int y, x, dir, weight, num; // (y, x, 방향, 무게, 번호)
 
             tie(y, x, dir, weight, num) = balls[i];
             for (int step = 0; step < 1; step++) {

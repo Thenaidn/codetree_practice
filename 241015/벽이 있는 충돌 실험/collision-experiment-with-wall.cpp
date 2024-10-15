@@ -94,11 +94,12 @@ int main() {
                 maps[i][j] = 0;
             }
         }
+
         for (int i = 0; i < a; i++) {
             for (int j = 0; j < a; j++) {
                 tmpdirs[i][j] = 11;
                 dirs[i][j] = tmpdirs[i][j];
-
+                balls[i][j] = 0;
             }
         }
         for (int i = 0; i < b; i++) {

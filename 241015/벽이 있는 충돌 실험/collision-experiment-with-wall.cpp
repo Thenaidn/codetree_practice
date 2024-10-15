@@ -9,12 +9,9 @@
 using namespace std;
 
 
-
 int a, b, c, d, e;
-int dy[8] = { 0, 0, -1, 1,1,-1,1,-1 };
-int dx[8] = { -1, 1, 0, 0,-1,1,1,-1 };
-int res = 0;
-
+int dy[4] = { 0, 0, -1, 1 }; // L, R, U, D
+int dx[4] = { -1, 1, 0, 0 };
 vector<pair<int, int>> balls;
 vector<int> dirs;
 
@@ -23,15 +20,13 @@ bool isinside(int y, int x) {
 }
 
 void move_balls() {
-    unordered_map<int, vector<int>> next_positions;
-    vector<int> to_remove;
-
+    unordered_map<int, vector<int>> np; 
+    vector<int> rm;
 
     for (int i = 0; i < balls.size(); i++) {
         int x = balls[i].first;
         int y = balls[i].second;
         int dir = dirs[i];
-
 
         int nx = x + dx[dir];
         int ny = y + dy[dir];
@@ -46,32 +41,29 @@ void move_balls() {
             ny = y;
         }
 
-        next_positions[ny * a + nx].push_back(i);
+
+        np[ny * a + nx].push_back(i);
     }
 
-    // 충돌 처리
-    for (auto& p : next_positions) {
+
+    vector<pair<int, int>> remain;
+    vector<int> remaindir;
+
+    for (auto& p : np) {
         vector<int>& ids = p.second;
-        if (ids.size() > 1) {
-
-            for (int id : ids) {
-                to_remove.push_back(id);
-            }
-        }
-        else {
-
+        if (ids.size() == 1) { 
             int id = ids[0];
             int nx = p.first % a;
             int ny = p.first / a;
-            balls[id] = { nx, ny };
+            remain.push_back({ nx, ny });
+            remaindir.push_back(dirs[id]);
         }
+
     }
 
-    sort(to_remove.rbegin(), to_remove.rend());
-    for (int id : to_remove) {
-        balls.erase(balls.begin() + id);
-        dirs.erase(dirs.begin() + id);
-    }
+
+    balls = remain;
+    dirs = remaindir;
 }
 
 int main() {
@@ -89,7 +81,7 @@ int main() {
         for (int i = 0; i < b; i++) {
             char dir;
             cin >> c >> d >> dir;
-            c--; d--; 
+            c--; d--;
 
             balls.push_back({ d, c });
             if (dir == 'L') dirs.push_back(0);
@@ -99,10 +91,9 @@ int main() {
         }
 
 
-        for (int i = 0; i < 4 * a; i++) {
+        for (int i = 0; i < 2 * a; i++) {
             move_balls();
         }
-
 
         cout << balls.size() << endl;
     }

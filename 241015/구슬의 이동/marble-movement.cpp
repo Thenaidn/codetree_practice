@@ -36,15 +36,16 @@ void removeBalls() {
         if (entry.second.size() > k) {
 
             vector<int> indices = entry.second;
+
             sort(indices.begin(), indices.end(), compareb);
             indices.resize(k); 
             for (int i = 0; i < indices.size(); i++) {
-                new_balls.push_back(balls[i]);
+                new_balls.push_back(balls[indices[i]]);
             }
         }
         else {
             for (int i = 0; i < entry.second.size(); i++) {
-                new_balls.push_back(balls[i]);
+                new_balls.push_back(balls[entry.second[i]]);
             }
         }
     }
@@ -69,34 +70,24 @@ int main() {
         maps[y][x]++;
     }
 
-    for (int time = 0; time < t; time++) {
+    for (int time = 0; time < a * 2; time++) {
 
         for (int i = 0; i < balls.size(); i++) {
             int y, x, dir, speed;
             tie(y, x, dir, speed) = balls[i];
-
-
             for (int step = 0; step < speed; step++) {
                 int nx = x + dx[dir];
                 int ny = y + dy[dir];
-
-
                 if (!isinside(ny, nx)) {
                     dir = (dir + 2) % 4; 
                     nx = x + dx[dir];
                     ny = y + dy[dir];
                 }
-
-
                 maps[y][x]--;
                 x = nx;
                 y = ny;
-
-
                 maps[y][x]++;
             }
-
-
             balls[i] = make_tuple(y, x, dir, speed);
         }
 

@@ -18,7 +18,7 @@ int n = 0;
 vector<int> answer;
 vector<pair<int, int>> segment;
 vector<char> chars;
-int m = 0;
+int m = INT_MIN;
 
 bool isinside(int y, int x) {
     return y >= 0 && y < a && x >= 0 && x < a;

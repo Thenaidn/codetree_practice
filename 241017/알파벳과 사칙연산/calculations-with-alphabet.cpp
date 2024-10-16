@@ -3,6 +3,7 @@
 #include <tuple>
 #include <algorithm>
 #include <unordered_map>
+#include <climits>
 using namespace std;
 
 int a, b, c, d;

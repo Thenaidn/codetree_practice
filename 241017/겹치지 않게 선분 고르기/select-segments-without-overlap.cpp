@@ -20,12 +20,7 @@ vector<pair<int, int>> segment;
 
 int m = 0;
 bool doSegmentsOverlap(int x1, int x2, int x3, int x4) {
-    int min1 = min(x1, x2);
-    int max1 = max(x1, x2);
-    int min2 = min(x3, x4);
-    int max2 = max(x3, x4);
-
-    return !(max1 < min2 || max2 < min1);
+    return (x1 <= x3 && x3 <= x2) || (x3 <= x1 && x1 <= x4);
 }
 bool isinside(int y, int x) {
     return y >= 0 && y < a && x >= 0 && x < a;
@@ -37,38 +32,35 @@ void Print(vector<int> ans) {
     }
     cout << endl;
 }
-int countoverlap(vector<int> answer) {
-
-    int tmp = 0;
-    if (answer.size() == 1) { return 1; }
+bool isvalid(vector<int>& answer) {
     for (int i = 0; i < answer.size(); i++) {
         for (int j = i + 1; j < answer.size(); j++) {
+            int x1 = segment[answer[i]].first;
+            int x2 = segment[answer[i]].second;
+            int x3 = segment[answer[j]].first;
+            int x4 = segment[answer[j]].second;
 
-            int x1 = segment[answer[i]].second;
-            int x2 = segment[answer[i]].first;
-            int x3 = segment[answer[j]].second;
-            int x4 = segment[answer[j]].first;
-            if (!doSegmentsOverlap(x1, x2, x3, x4)) { tmp++; }
+            if (doSegmentsOverlap(x1, x2, x3, x4)) {
+                return false;
+            }
         }
     }
-
-    return tmp;
+    return true;
 }
 
-void Choose(int curr_num) {
-    if (!answer.empty()) {
+void Choose(int curr_num, vector<int>& answer) {
+    if (isvalid(answer)) {
         //Print(answer);
-        m = max(m, countoverlap(answer));
-        if (curr_num == n + 1) {
-            return;
-        }
+        m = max(m, (int)answer.size());
+    }
+    if (curr_num == n) {
+        return;
     }
 
-    for (int i = 0; i < n; i++) {
-        answer.push_back(i);
-        Choose(curr_num + 1);
-        answer.pop_back();
-    }
+    answer.push_back(curr_num);
+    Choose(curr_num + 1, answer);
+    answer.pop_back();
+    Choose(curr_num + 1, answer);
 
     return;
 }
@@ -83,8 +75,7 @@ int main() {
         segment.push_back(make_pair(b, c));
     }
     n = segment.size();
-
-    Choose(1);
+    Choose(0, answer);
 
     cout << m;
     return 0;

@@ -13,25 +13,24 @@ int n = 2;
 vector<int> answer;
 
 void Print(vector<int> ans) {
-    for (int i = ans.size() - 1; i >= 0; i--) {
-        cout << ans[i] << " ";
+    for (auto a : ans) {
+        cout << a << " ";
     }
     cout << endl;
 }
-bool used[1000] = { false };
-void Choose(int curr_num) {
+void Choose(int curr_num, int previous) {
     if (curr_num == n + 1) {
+
         Print(answer);
         return;
     }
 
     for (int i = 1; i <= a; i++) {
+        if (i <= previous) { continue; }
         answer.push_back(i);
-        if(!used[i]){ used[i] = true; }
-        else { answer.pop_back(); return; }
-        Choose(curr_num + 1);
+        Choose(curr_num + 1, i);
         answer.pop_back();
-        used[i] = false;
+
     }
     return;
 }
@@ -42,6 +41,6 @@ int main() {
 
     cin >> a >> n;
 
-    Choose(1);
+    Choose(1, 0);
     return 0;
 }

@@ -38,14 +38,14 @@ int calc(vector<int> ans) {
 void Choose(int curr_num) {
     if (curr_num == n + 1) {
 
-        for (int i : answer) {
+        /*for (int i : answer) {
             if (i >= c) { return; }
-        }
+        }*/
         res = max(res, calc(answer));
         return;
     }
 
-    for (int i = 0; i < a; i++) {
+    for (int i = 0; i < c; i++) {
         answer.push_back(i);
         Choose(curr_num + 1);
         answer.pop_back();

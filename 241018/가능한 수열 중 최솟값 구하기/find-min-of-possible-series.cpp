@@ -19,42 +19,30 @@ void Print(vector<int> ans) {
     cout << endl;
 }
 bool completed = false;
+
+bool calc(int cnt) {
+    int count = 0;
+    for (int i = 0; i < n - cnt; i++) {
+        if (answer[i] == answer[i + cnt]) {
+            count++;
+            if (count == cnt) { return false; }
+        }
+        else {
+            count = 0;
+        }
+    }
+    return true;
+}
 void Choose(int curr_num) {
     if (completed) { return; }
     if (curr_num == n + 1) {
 
         bool cmp = true;
-        if (n >= 2) {
-            for (int i = 0; i < n - 1; i++) {
-                if (answer[i] == answer[i + 1]) { cmp = false; break; }
+        for (int i = 1; i <= n / 2; i++) {
+            if (calc(i) == false) {
+                cmp = false; break;
             }
         }
-        if (n >= 4) {
-            int count = 0;
-            for (int i = 0; i < n - 2; i++) {
-                if (answer[i] == answer[i + 2]) { 
-                    count++;
-                    if(count == 2){ cmp = false; break; }
-                }
-                else {
-                    count = 0;
-                }
-            }
-        }
-        if (n >= 6) {
-            int count = 0;
-            for (int i = 0; i < n - 3; i++) {
-                if (answer[i] == answer[i + 3]) {
-                    count++;
-                    if (count == 3) { cmp = false; break; }
-                }
-                else {
-                    count = 0;
-                }
-            }
-        }
-
-
 
         
         if (cmp) { Print(answer); completed = true; }

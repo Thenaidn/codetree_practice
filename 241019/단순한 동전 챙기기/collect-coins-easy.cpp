@@ -15,7 +15,7 @@ vector<int> answer;
 int res = INT_MAX;
 char maps[20][20];
 int tmpmaps[20][20] = { 0, };
-pair<int, int> points[10];
+pair<int, int> points[11];
 pair<int, int> startpoint;
 pair<int, int> endpoint;
 int pointon[10] = { 0 };
@@ -52,7 +52,7 @@ void Choose(int curr_num, int previous) {
         return;
     }
 
-    for (int i = 1; i <= a; i++) {
+    for (int i = 1; i <= 9; i++) {
         if (i <= previous) { continue; }
         answer.push_back(i);
         Choose(curr_num + 1, i);

@@ -20,41 +20,41 @@ void Print(vector<int> ans) {
 }
 bool completed = false;
 
-bool calc(int cnt) {
-    int count = 0;
-    for (int i = 0; i < n - cnt; i++) {
-        if (answer[i] == answer[i + cnt]) {
-            count++;
-            if (count == cnt) { return false; }
+bool calc(int length) {
+    for (int i = 1; i <= length / 2; i++) {
+        bool same = true;
+        if (length - 2 * i < 0) {
+            continue;
         }
-        else {
-            count = 0;
+        for (int j = 0; j < i; j++) {
+            if (answer[length - i + j] != answer[length - 2 * i + j]) {
+                same = false;
+                break;
+            }
         }
+        if (same) return false;
     }
     return true;
 }
-void Choose(int curr_num) {
-    if (completed) { return; }
+
+bool Choose(int curr_num) {
+
     if (curr_num == n + 1) {
-
-        bool cmp = true;
-        for (int i = 1; i <= n / 2; i++) {
-            if (calc(i) == false) {
-                cmp = false; break;
-            }
-        }
-
-        
-        if (cmp) { Print(answer); completed = true; }
-        return;
+        Print(answer);
+        return true;
     }
 
     for (int i = 1; i <= a; i++) {
         answer.push_back(i);
-        Choose(curr_num + 1);
+        if (calc(curr_num)) {
+            if (Choose(curr_num + 1)) {
+                return true;
+            }
+        }
+
         answer.pop_back();
     }
-    return;
+    return false;
 }
 
 int main() {

@@ -23,24 +23,26 @@ void Print(vector<int> ans) {
     }
     cout << endl;
 }
-int calc(vector<int> ans) {
-
-    int tmp = points[ans[0]].first - points[ans[1]].first;
-    int tmp2 = points[ans[0]].second - points[ans[1]].second;
-    
-
-    return tmp * tmp + tmp2 * tmp2;
+int calc(vector<int>& ans) {
+    int max_dist = 0;
+    for (int i = 0; i < b; i++) {
+        for (int j = i + 1; j < b; j++) {
+            int dx = points[ans[i]].first - points[ans[j]].first;
+            int dy = points[ans[i]].second - points[ans[j]].second;
+            max_dist = max(max_dist, dx * dx + dy * dy);
+        }
+    }
+    return max_dist;
 }
 void Choose(int curr_num, int previous) {
-    if (curr_num == 2) {
+    if (curr_num == b) {
 
         res = min(res, calc(answer));
         //Print(answer);
         return;
     }
 
-    for (int i = 0; i < a; i++) {
-        if (i <= previous) { continue; }
+    for (int i = previous + 1; i < a; i++) {
         answer.push_back(i);
         Choose(curr_num + 1, i);
         answer.pop_back();

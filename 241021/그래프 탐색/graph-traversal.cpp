@@ -54,6 +54,7 @@ int main() {
     for (int i = 0; i < b; i++) {
         cin >> c >> d;
         maps[c].push_back(d);
+        maps[d].push_back(c);
     }
 
 

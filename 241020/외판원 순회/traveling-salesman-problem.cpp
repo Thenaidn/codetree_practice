@@ -26,13 +26,15 @@ void Print(vector<int> ans) {
     cout << endl;
 }
 int calc(vector<int>& ans) {
-    int prev = 1;
+    int prev = 0;
     int sum = 0;
     for (int i = 0; i < a - 1; i++) {
-        sum += maps[prev - 1][answer[i] - 1];
+        if (maps[prev][answer[i]] == 0) { return INT_MAX; }
+        sum += maps[prev][answer[i]];
         prev = answer[i];
     }
-    sum += maps[prev - 1][0];
+
+    sum += maps[prev][0];
     return sum;
 }
 void Choose(int curr_num) {
@@ -43,7 +45,7 @@ void Choose(int curr_num) {
         return;
     }
 
-    for (int i = 2; i <= a; i++) {
+    for (int i = 1; i < a; i++) {
         if (!visited[i]) {
             visited[i] = true;
             answer.push_back(i);

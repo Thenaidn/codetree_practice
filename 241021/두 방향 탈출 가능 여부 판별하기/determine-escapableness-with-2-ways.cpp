@@ -19,7 +19,7 @@ int maps[1001][1001];
 int tmpmaps[20][20] = { 0, };
 vector<pair<int, int>> points;
 bool isinside(int y, int x) {
-    return y >= 0 && y < a && x >= 0 && x < a;
+    return y >= 0 && y < a && x >= 0 && x < b;
 }
 
 
@@ -51,6 +51,7 @@ int main() {
 
 
     dfs(0, 0);
+
     if (visited[a - 1][b - 1]) {
         cout << 1; return 0;
     }

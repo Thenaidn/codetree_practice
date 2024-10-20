@@ -29,8 +29,9 @@ void dfs(int y, int x) {
         int nx = x + dx[i];
         int ny = y + dy[i];
         if (isinside(ny, nx)) {
-            if (maps[ny][nx] == 1) {
+            if (maps[ny][nx] == 1 && visited[ny][nx] == false) {
                 visited[ny][nx] = true;
+                if (ny == a - 1 && nx == b - 1) { return; }
                 dfs(ny, nx);
             }
         }

@@ -33,7 +33,7 @@ int calc(vector<int>& ans) {
         sum += maps[prev][answer[i]];
         prev = answer[i];
     }
-
+    if (maps[prev][0] == 0) { return INT_MAX; }
     sum += maps[prev][0];
     return sum;
 }

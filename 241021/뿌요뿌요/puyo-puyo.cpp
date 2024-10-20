@@ -52,12 +52,15 @@ int main() {
         }
     }
     for (int k = 1; k <= maxnum; k++) {
-        
+        bool completed = false;
         for (int i = 0; i < a; i++) {
             for (int j = 0; j < b; j++) {
                 if (!visited[i][j] && maps[i][j] == k) {
                     dfs(i, j, k);
-                    if (cnt > 3) { res++; }
+                    if (cnt > 3) { 
+                        if(completed){ res++; }
+                        completed = true;
+                    }
                     answer.push_back(cnt);
                     cnt = 0;
                 }

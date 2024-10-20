@@ -58,8 +58,8 @@ int main() {
                 int size = dfs(i, j, maps[i][j]);
                 if (size >= 4) {
                     res++;
-                    ans = max(ans, size);
                 }
+                ans = max(ans, size);
             }
         }
     }

@@ -34,6 +34,7 @@ int calc(vector<int>& ans) {
 }
 
 void dfs(int vertex, int count) {
+    visited[vertex] = true;
     for (int i = 0; i < maps[vertex].size(); i++) {
         int curr_v = maps[vertex][i];
         if (!visited[curr_v]) {

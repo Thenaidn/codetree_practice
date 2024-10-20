@@ -64,13 +64,6 @@ int main() {
             }
         }
 
-        
-        
-        for (int i = 0; i < a; i++) {
-            for (int j = 0; j < b; j++) {
-                visited[i][j] = false;
-            }
-        }
     }
     int ans = 0;
     for (int k = 0; k< answer.size(); k++) {

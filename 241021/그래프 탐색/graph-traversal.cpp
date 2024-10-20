@@ -33,14 +33,13 @@ int calc(vector<int>& ans) {
     return m;
 }
 
-void dfs(int vertex, int count) {
+void dfs(int vertex) {
     visited[vertex] = true;
     for (int i = 0; i < maps[vertex].size(); i++) {
         int curr_v = maps[vertex][i];
         if (!visited[curr_v]) {
-            res = max(res, ++count);
-            visited[curr_v] = true;
-            dfs(curr_v, count);
+            res++;
+            dfs(curr_v);
         }
         
     }
@@ -59,7 +58,7 @@ int main() {
     }
 
 
-    dfs(1, 0);
+    dfs(1);
     cout << res;
     return 0;
 }

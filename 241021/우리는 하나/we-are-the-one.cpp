@@ -11,7 +11,7 @@ int a, b, c, d, e, m;
 int dy[4] = { 0, 1, 0, -1 };
 int dx[4] = { 1, 0, -1, 0 };
 
-#define VERTICES_NUM 1005
+#define VERTICES_NUM 10
 #define EDGES_NUM 6
 
 int grid[VERTICES_NUM][VERTICES_NUM] = { 0 };

@@ -26,8 +26,8 @@ bool isinside(int y, int x) {
 }
 bool cango(int y, int x, int ny, int nx) {
     if (!isinside(ny, nx)) { return false; }
-    if (visited[ny][nx] || 
-        abs(grid[y][x] - grid[ny][nx]) > d || 
+    if (visited[ny][nx] ||
+        abs(grid[y][x] - grid[ny][nx]) > d ||
         abs(grid[y][x] - grid[ny][nx]) < c) {
         return false;
     }
@@ -60,52 +60,14 @@ void bfs() {
 int n = 2;
 vector<int> ansr;
 
-vector<int> citycombi[1001];
-int citycombicount = 0;
 vector<pair<int, int>> citys;
 
-void Choose(int curr_num, int previous) {
+void Choose(int curr_num, int previous, int& ans) {
     if (curr_num == b + 1) {
-        for (int i = 0; i < ansr.size(); i++) {
-            citycombi[citycombicount].push_back(ansr[i]);
-        }
-        citycombicount++;
-        return;
-    }
-
-    for (int i = 0; i < a * a; i++) {
-        if (i <= previous) { continue; }
-        ansr.push_back(i);
-        Choose(curr_num + 1, i);
-        ansr.pop_back();
-
-    }
-    return;
-}
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(NULL);
-
-
-
-    cin >> a >> b >> c >> d;
-
-    for (int i = 0; i < a; i++) {
-        for (int j = 0; j < a; j++) {
-            cin >> grid[i][j];
-            citys.push_back(make_pair(i, j));
-        }
-    }
-
-    Choose(1, -1);
-
-    int ans = 0;
-    for (int k = 0; k < citycombicount; k++) {
         int y, x;
         for (int i = 0; i < b; i++) {
-            y = citys[citycombi[k][i]].first;
-            x = citys[citycombi[k][i]].second;
+            y = citys[ansr[i]].first;
+            x = citys[ansr[i]].second;
             push(y, x);
         }
 
@@ -123,10 +85,32 @@ int main() {
         }
         ans = max(ans, res);
 
-
+        return;
     }
 
+    for (int i = 0; i < a * a; i++) {
+        if (i <= previous) { continue; }
+        ansr.push_back(i);
+        Choose(curr_num + 1, i, ans);
+        ansr.pop_back();
+    }
+}
 
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    cin >> a >> b >> c >> d;
+
+    for (int i = 0; i < a; i++) {
+        for (int j = 0; j < a; j++) {
+            cin >> grid[i][j];
+            citys.push_back(make_pair(i, j));
+        }
+    }
+
+    int ans = 0;
+    Choose(1, -1, ans);
 
     cout << ans;
     return 0;

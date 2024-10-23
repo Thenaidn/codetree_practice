@@ -23,7 +23,7 @@ int order = 0;
 queue<pair<int, int>> q;
 
 bool isinside(int y, int x) {
-    return y >= 0 && y < a && x >= 0 && x < b;
+    return y >= 0 && y < a && x >= 0 && x < a;
 }
 
 void push(int y, int x, int s) {

@@ -66,7 +66,10 @@ int main() {
     push(b - 1, c - 1, 0);
     bfs();
 
-    if (answer[d - 1][e - 1] == 0) { cout << -1; }
+    if (answer[d - 1][e - 1] == 0) { 
+        if (a == 1) { cout << 0; }
+        else { cout << -1; }
+    }
     else { cout << answer[d - 1][e - 1]; }
     //cout << ans;
     return 0;

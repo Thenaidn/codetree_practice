@@ -23,13 +23,16 @@ int visited[MAX_N][MAX_N] = { 0 };
 int order = 0;
 queue<pair<int, int>> q;
 vector<pair<int, int>> points;
-
+vector<int> ans;
 bool isinside(int y, int x) {
     return y >= 0 && y < a && x >= 0 && x < a;
 }
 
 void push(int y, int x, int s, int c) {
     answer[y][x] = s;
+    if (y == d - 1 && x == e - 1) {
+        ans.push_back(s);
+    }
     if(crush[y][x] >= 0){ crush[y][x] = min(c, crush[y][x]); }
     else { crush[y][x] = c; }
     visited[y][x]++;
@@ -78,7 +81,8 @@ int main() {
         cout << -1;
     }
     else {
-        cout << answer[d - 1][e - 1];
+        sort(ans.begin(), ans.end());
+        cout << ans[0];
     }
     
     //cout << ans;

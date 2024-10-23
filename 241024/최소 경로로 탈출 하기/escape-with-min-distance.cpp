@@ -7,14 +7,16 @@
 #include <queue>
 using namespace std;
 
+#define MAX_N 1001
+
 int a, b, c, d, e, m;
 int dy[4] = { 0, 1, 0, -1 };
 int dx[4] = { 1, 0, -1, 0 };
 
 
-int step[10][10] = { 0 };
-int answer[10][10] = { 0 };
-bool visited[10][10] = { false };
+int step[MAX_N][MAX_N] = { 0 };
+int answer[MAX_N][MAX_N] = { 0 };
+bool visited[MAX_N][MAX_N] = { false };
 int order = 0;
 queue<pair<int, int>> q;
 

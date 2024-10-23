@@ -18,8 +18,8 @@ int ndx[8] = { 2, 2, -1, 1, 1, -1, -2, -2 };
 
 int step[MAX_N][MAX_N] = { 0 };
 int answer[MAX_N][MAX_N] = { 0 };
-int crush[MAX_N][MAX_N] = { 0 };
-bool visited[MAX_N][MAX_N] = { false };
+int crush[MAX_N][MAX_N] = { -1 };
+int visited[MAX_N][MAX_N] = { 0 };
 int order = 0;
 queue<pair<int, int>> q;
 vector<pair<int, int>> points;
@@ -30,8 +30,9 @@ bool isinside(int y, int x) {
 
 void push(int y, int x, int s, int c) {
     answer[y][x] = s;
-    crush[y][x] = min(c, crush[y][x]);
-    visited[y][x] = true;
+    if(crush[y][x] >= 0){ crush[y][x] = min(c, crush[y][x]); }
+    else { crush[y][x] = c; }
+    visited[y][x]++;
     q.push(make_pair(y, x));
 }
 
@@ -47,7 +48,7 @@ void bfs() {
             int nx = x + dx[i];
             int ny = y + dy[i];
             if (isinside(ny, nx)) {
-                if (!visited[ny][nx] && crush[y][x] <= k) {
+                if (visited[ny][nx] <= 4 && crush[y][x] <= k) {
                     if (step[ny][nx] == 1) {
                         push(ny, nx, answer[y][x] + 1, crush[y][x] + 1);
                     }
@@ -66,6 +67,7 @@ int main() {
     for (int i = 0; i < a; i++) {
         for (int j = 0; j < a; j++) {
             cin >> step[i][j];
+            crush[i][j] = -1;
         }
     }
     cin >> b >> c >> d >> e;

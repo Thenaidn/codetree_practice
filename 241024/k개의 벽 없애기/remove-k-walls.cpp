@@ -7,7 +7,7 @@
 #include <queue>
 using namespace std;
 
-#define MAX_N 4
+#define MAX_N 1004
 
 int a, b, c, d, e, m, k, n;
 int dy[4] = { 0, 1, 0, -1 };
@@ -30,7 +30,7 @@ bool isinside(int y, int x) {
 
 void push(int y, int x, int s, int c) {
     answer[y][x] = s;
-    crush[y][x] = c;
+    crush[y][x] = min(c, crush[y][x]);
     visited[y][x] = true;
     q.push(make_pair(y, x));
 }

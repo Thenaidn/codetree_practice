@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <climits>
 #include <queue>
+#include <cmath>
 using namespace std;
 
 #define MAX_N 1004

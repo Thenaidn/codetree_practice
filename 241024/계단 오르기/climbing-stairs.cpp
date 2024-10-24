@@ -13,7 +13,7 @@ int a, b, c, d, e, m, k, n;
 int dy[4] = { 0, 1, 0, -1 };
 int dx[4] = { 1, 0, -1, 0 };
 
-int memo[MAX_N] = { -1 };
+long long memo[MAX_N] = { -1 };
 
 int calc(int n) {
     if (memo[n] != -1)
@@ -31,14 +31,19 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(NULL);
     for (int i = 0; i < MAX_N; i++) { memo[i] = -1; }
-    memo[0] = INT_MAX;
-    memo[1] = INT_MAX;
     memo[2] = 1;
     memo[3] = 1;
+
+    for (int i = 4; i < MAX_N; i++) {
+        long long n1 = (memo[i - 2] != -1) ? memo[i - 1] : 0;
+        long long n2 = (memo[i - 3] != -1) ? memo[i - 3] : 0;
+        memo[i] = n1 + n2;
+    }
+
 
     cin >> a;
     if (a < 2) { cout << 0; return 0; }
 
-    cout << calc(a) % 10007;
+    cout << memo[a] % 10007;
     return 0;
 }

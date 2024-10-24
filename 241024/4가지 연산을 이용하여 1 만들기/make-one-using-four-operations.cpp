@@ -66,7 +66,7 @@ int main() {
 
     cin >> a;
 
-    if (a == 1) { cout << 1; return 0; }
+    if (a == 1) { cout << 0; return 0; }
 
     push(a, 0);
 

@@ -35,15 +35,15 @@ int main() {
     memo[3] = 1;
 
     for (int i = 4; i < MAX_N; i++) {
-        long long n1 = (memo[i - 2] != -1) ? memo[i - 1] : 0;
+        long long n1 = (memo[i - 2] != -1) ? memo[i - 2] : 0;
         long long n2 = (memo[i - 3] != -1) ? memo[i - 3] : 0;
-        memo[i] = n1 + n2;
+        memo[i] = (n1 + n2) % 10007;
     }
 
 
     cin >> a;
     if (a < 2) { cout << 0; return 0; }
 
-    cout << memo[a] % 10007;
+    cout << memo[a];
     return 0;
 }

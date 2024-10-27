@@ -30,13 +30,6 @@ vector<pair<pair<int, int>, int>> lines;
 //    dp[0][0] = 1;
 //}
 
-bool comparelines(const pair<pair<int, int>, int>& a, const pair<pair<int, int>, int>& b) {
-    if (a.first.first != b.first.first) {
-        return a.first.first < b.first.first;
-    }
-    return a.first.second < b.first.second;
-}
-
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(NULL);
@@ -45,26 +38,18 @@ int main() {
     for (int i = 0; i < a; i++) {
 
         cin >> b >> c >> d;
-        lines.push_back(make_pair(make_pair(b, c), d));
+        lines.push_back({ {b,c},d });
     }
 
-    
-    sort(lines.begin(), lines.end(), comparelines);
-    int tmp = lines[0].first.second;
-    //initialize();
+
     for (int i = 0; i < a; i++) {
         dp[i] = lines[i].second;
     }
 
     for (int i = 0; i < a; i++) {
-        pair<int, int> p1 = lines[i].first;
         for (int j = 0; j < i; j++) {
-            pair<int, int> p2 = lines[j].first;
-            if (p2.second < p1.first) {
-                dp[i] = max(dp[i], dp[j] + dp[i]);
-            }
-            else {
-                dp[i] = max(dp[i], dp[j]);
+            if (lines[j].first.second < lines[i].first.first) {
+                dp[i] = max(dp[i], dp[j] + lines[i].second);
             }
         }
 

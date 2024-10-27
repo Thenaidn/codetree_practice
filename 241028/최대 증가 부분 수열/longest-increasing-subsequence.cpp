@@ -22,12 +22,9 @@ int aa[MAX_N];
 
 
 void initialize() {
-    for (int i : dp) {
-        i = INT_MIN;
+    for (int i = 0; i < a; i++) {
+        dp[i] = 1;
     }
-    dp[0] = 1;
-
-    
 }
 
 int main() {
@@ -43,8 +40,10 @@ int main() {
 
     for (int i = 1; i < a; i++) {
         for (int j = 0; j < i; j++) {
-            if (aa[j] >= aa[i] || aa[j] == INT_MIN) { continue; }
-            dp[i] = max(dp[i], dp[j] + 1);
+            if (aa[j] < aa[i]) {
+                dp[i] = max(dp[i], dp[j] + 1);
+            }
+           
         }
     }
     

@@ -18,7 +18,6 @@ int dx[4] = { 1, 0, -1, 0 };
 int memo[MAX_N] = { -1 };
 int dp[MAX_N][MAX_N] = { 0, };
 int dp2[MAX_N][MAX_N] = { 0, };
-int dp3[MAX_N][MAX_N] = { 0, };
 int maps[MAX_N][MAX_N];
 
 
@@ -52,13 +51,22 @@ int main() {
 
     for (int i = 1; i < a; i++) {
         for (int j = 1; j < a; j++) {
-            if (abs(dp2[i - 1][j] - dp[i - 1][j]) <= abs(dp2[i][j - 1] - dp[i][j - 1])) {
-                dp[i][j] = min(dp[i - 1][j], maps[i][j]);
-                dp2[i][j] = max(dp2[i - 1][j], maps[i][j]);
+            int max_up = max(dp2[i - 1][j], maps[i][j]);
+            int min_up = min(dp[i - 1][j], maps[i][j]);
+            int max_left = max(dp2[i][j - 1], maps[i][j]);
+            int min_left = min(dp[i][j - 1], maps[i][j]);
+
+            if (abs(max_up - min_up) < abs(max_left - min_left)) {
+                dp2[i][j] = max_up;
+                dp[i][j] = min_up;
+            }
+            else if (abs(max_up - min_up) == abs(max_left - min_left)) {
+                dp2[i][j] = min(max_up, max_left);
+                dp[i][j] = max(min_up, min_left);
             }
             else {
-                dp[i][j] = min(dp[i][j - 1], maps[i][j]);
-                dp2[i][j] = max(dp2[i][j - 1], maps[i][j]);
+                dp2[i][j] = max_left;
+                dp[i][j] = min_left;
             }
         }
     }

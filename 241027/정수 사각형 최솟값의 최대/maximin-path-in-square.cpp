@@ -19,24 +19,16 @@ long long memo[MAX_N] = { -1 };
 int dp[MAX_N][MAX_N] = { 0, };
 int aa[MAX_N][MAX_N];
 
+
+
 void initialize() {
-    int m = aa[0][0];
-    dp[0][0] = m;
+    dp[0][0] = aa[0][0];
 
     for (int i = 1; i < a; i++) {
-        m = min(aa[0][i], m);
-        dp[0][i] = m;
-    }
-
-    m = aa[0][0];
-
-    for (int i = 1; i < a; i++) {
-        m = min(aa[i][0], m);
-        dp[i][0] = m;
-
+        dp[0][i] = min(dp[0][i - 1], aa[0][i]);
+        dp[i][0] = min(dp[i - 1][0], aa[i][0]);
     }
 }
-
 
 int main() {
     ios::sync_with_stdio(false);
@@ -48,22 +40,18 @@ int main() {
             cin >> aa[i][j];
         }
     }
+
     if (a == 1) { cout << aa[0][0]; return 0; }
+
     initialize();
 
     for (int i = 1; i < a; i++) {
-        int m = dp[i][0];
         for (int j = 1; j < a; j++) {
-            m = min(m, dp[i - 1][j]);
-            dp[i][j] = m;
+            int m = max(dp[i - 1][j], dp[i][j - 1]);
+            dp[i][j] = min(m, aa[i][j]);
         }
     }
 
-    
-    if (aa[a - 1][a - 1] < dp[a - 1][a - 2] && aa[a - 1][a - 1] < dp[a - 2][a - 1]) {
-        cout << aa[a - 1][a - 1];
-    }
-    else{ cout << max(dp[a - 2][a - 1], dp[a - 1][a - 2]); }
-   
+    cout << dp[a - 1][a - 1];
     return 0;
 }

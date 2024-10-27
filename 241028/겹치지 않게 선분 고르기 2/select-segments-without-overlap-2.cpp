@@ -56,7 +56,15 @@ int main() {
     int res = 1;
 
     for (pair<int, int> p : lines) {
-        if (p.first <= tmp) { continue; }
+        if (p.first <= tmp) { 
+            if (p.second >= tmp) {
+                continue;
+            }
+            else {
+                tmp = p.second;
+                continue;
+            }
+        }
         tmp = p.second;
         res++;
     }

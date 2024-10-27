@@ -48,7 +48,7 @@ int main() {
             cin >> aa[i][j];
         }
     }
-    
+    if (a == 1) { cout << aa[0][0]; return 0; }
     initialize();
 
     for (int i = 1; i < a; i++) {

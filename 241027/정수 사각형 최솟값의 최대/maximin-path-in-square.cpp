@@ -60,7 +60,10 @@ int main() {
     }
 
     
-
-    cout << max(dp[a - 2][a - 1], dp[a - 1][a - 2]);
+    if (aa[a - 1][a - 1] < dp[a - 1][a - 2] && aa[a - 1][a - 1] < dp[a - 2][a - 1]) {
+        cout << aa[a - 1][a - 1];
+    }
+    else{ cout << max(dp[a - 2][a - 1], dp[a - 1][a - 2]); }
+   
     return 0;
 }

@@ -60,7 +60,7 @@ int main() {
         pair<int, int> p1 = lines[i].first;
         for (int j = 0; j < i; j++) {
             pair<int, int> p2 = lines[j].first;
-            if (p2.first > p1.second) {
+            if (p2.second < p1.first) {
                 dp[i] = max(dp[i], dp[j] + dp[i]);
             }
             else {

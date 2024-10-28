@@ -19,14 +19,10 @@ long long memo[MAX_N] = { -1 };
 int dp[MAX_N] = {0,};
 vector<int> arr;
 
-vector<pair<pair<int, int>, int>> lines;
 
 void initialize() {
     for (int i = 0; i <= a; i++) {
-        if (i <= b && arr[i] == i) {
-            dp[i] = 1;
-        }
-        else { dp[i] = INT_MAX; }
+        dp[i] = INT_MAX;
     }
     dp[0] = 0;
 }
@@ -36,31 +32,28 @@ int main() {
     cin.tie(NULL);
 
     cin >> b >> a;
-    arr.push_back(0);
-    for (int i = 1; i <= b; i++) {
+    for (int i = 0; i < b; i++) {
         cin >> c;
         arr.push_back(c);
     }
-    sort(arr.begin(), arr.end());
 
     initialize();
 
-    for (int i = 1; i <= a; i++) {
-        int tmp = i;
-        int count = 0;
-        for (int j = b; j > 0; j--) {
-            if (tmp >= arr[j]) {
-                tmp -= arr[j]; count++;
+   
+    
+    for (int num : arr) {
+        for (int i = a; i >= num; i--) {
+            if (dp[i - num] != INT_MAX) {
+                dp[i] = min(dp[i], dp[i - num] + 1);
             }
         }
-        if (tmp == 0) {
-            dp[i] = min(dp[i], count);
-        }
     }
-    
     int res = dp[a];
-    if (res == INT_MAX) { res = -1; }
-
-    cout << res;
+    if (res == INT_MAX) {
+        cout << -1;
+    }
+    else {
+        cout << res;
+    }
     return 0;
 }

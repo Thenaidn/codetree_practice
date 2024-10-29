@@ -8,7 +8,7 @@
 #include <cmath>
 using namespace std;
 
-#define MAX_N 1005
+#define MAX_N 100005
 #define MOD 10007
 #define LOW_INT -10001
 

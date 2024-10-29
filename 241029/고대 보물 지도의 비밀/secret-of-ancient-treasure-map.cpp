@@ -17,7 +17,7 @@ int dy[4] = { 0, 1, 0, -1 };
 int dx[4] = { 1, 0, -1, 0 };
 
 long long memo[MAX_N] = { -1 };
-int dp[10][MAX_N] = { 0, };
+int dp[11][MAX_N] = { 0, };
 vector<int> arr;
 
 bool ans[MAX_N] = { false, };

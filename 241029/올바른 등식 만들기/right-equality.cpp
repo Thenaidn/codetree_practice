@@ -64,8 +64,7 @@ int main() {
 
     long long res = dp[a - 1][b + 20];
     if (b == 0) { 
-        long long tmp = pow(2,a); 
-        res = tmp;
+        res *= 2;
     }
     cout << res;
     return 0;

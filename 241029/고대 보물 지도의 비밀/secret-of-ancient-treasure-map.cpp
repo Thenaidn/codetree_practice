@@ -67,12 +67,12 @@ int main() {
     }
 
     int res = LOW_INT;
-
+    for (int i = 0; i < a; i++) {
         for (int j = 0; j <= b; j++) {
-            res = max(res, dp[j][a - 1]);
+            res = max(res, dp[j][i]);
 
         }
-
+    }
 
     cout << res;
     return 0;

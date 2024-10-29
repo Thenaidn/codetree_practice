@@ -29,8 +29,8 @@ void initialize() {
             dp[j][i] = 0;
         }
     }
-    dp[0][arr[0] + 20] = 1;
-   
+    dp[0][20 + arr[0]] = 1;
+    dp[0][20 - arr[0]] = 1;
 }
 
 int main() {
@@ -62,8 +62,8 @@ int main() {
         }
     }
 
-    int res = dp[a - 1][b + 20] + 1;
-
+    int res = dp[a - 1][b + 20];
+    if (b == 0) { res *= 2; }
     cout << res;
     return 0;
 }

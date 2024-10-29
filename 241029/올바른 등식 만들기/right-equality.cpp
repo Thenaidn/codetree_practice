@@ -17,7 +17,7 @@ int dy[4] = { 0, 1, 0, -1 };
 int dx[4] = { 1, 0, -1, 0 };
 
 long long memo[MAX_N] = { -1 };
-int dp[101][MAX_N] = { 0, };
+long long dp[101][MAX_N] = { 0, };
 vector<int> arr;
 bool isinside(int n) {
     return n >= 0 && n < a;
@@ -50,11 +50,11 @@ int main() {
         for (int sum = -20; sum <= 20; sum++) {
             int idx = sum + 20;
             if (dp[i - 1][idx] > 0) {
-                int plus_sum = sum + arr[i];
+                long long plus_sum = sum + arr[i];
                 if (plus_sum >= -20 && plus_sum <= 20) {
                     dp[i][plus_sum + 20] += dp[i - 1][idx];
                 }
-                int minus_sum = sum - arr[i];
+                long long minus_sum = sum - arr[i];
                 if (minus_sum >= -20 && minus_sum <= 20) {
                     dp[i][minus_sum + 20] += dp[i - 1][idx];
                 }
@@ -62,8 +62,11 @@ int main() {
         }
     }
 
-    int res = dp[a - 1][b + 20];
-    if (b == 0) { res *= 2; }
+    long long res = dp[a - 1][b + 20];
+    if (b == 0) { 
+        long long tmp = pow(2,a); 
+        res = tmp;
+    }
     cout << res;
     return 0;
 }

@@ -45,7 +45,7 @@ int main() {
         dp[i] = max(arr[i], dp[i - 1] + arr[i]);
     }
 
-    int res;
+    int res = INT_MIN;
     
     for (int i = 0; i < a; i++) {
         res = max(res, dp[i]);

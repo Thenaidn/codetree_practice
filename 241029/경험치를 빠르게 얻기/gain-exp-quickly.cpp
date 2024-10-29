@@ -8,7 +8,7 @@
 #include <cmath>
 using namespace std;
 
-#define MAX_N 1000005
+#define MAX_N 100005
 #define MOD 10007
 
 int a, b, c, d, e, k, n;
@@ -21,8 +21,8 @@ vector<pair<int, int>> arr;
 
 
 void initialize() {
-    for (int i = 0; i <= a; i++) {
-        dp[i] = 0;
+    for (int i = 0; i < MAX_N; i++) {
+        dp[i] = INT_MAX;
     }
     dp[0] = 0;
 }
@@ -44,21 +44,25 @@ int main() {
     for (pair<int, int> p : arr) {
         int c = p.first; int d = p.second;
 
-        for (int i = c; i <= a; i++) {
-            dp[i] = max(dp[i], dp[i - c] + d);
+        for (int i = MAX_N - 1; i >= c; i--) {
+            if (dp[i - c] != INT_MAX) {
+                dp[i] = min(dp[i], dp[i - c] + d);
+            }
+            
         }
     }
 
-    int res = 0;
+    int res = INT_MAX;
     for (int i = a; i < MAX_N; i++) {
-        if (dp[a] > 0) {
-            cout << a - 1;
-            res = 1;
-            break;
-        }
+        res = min(res, dp[i]);
     }
-    if (res == 0) { cout << -1; }
-    //cout << res;
+
+    if (res == INT_MAX) {
+        cout << -1 << endl;
+    }
+    else {
+        cout << res << endl;
+    }
 
     return 0;
 }

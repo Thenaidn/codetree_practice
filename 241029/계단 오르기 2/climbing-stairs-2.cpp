@@ -68,11 +68,11 @@ int main() {
 
     int res = INT_MIN;
 
-    for (int i = 0; i < a; i++) {
         for (int j = 0; j < 4; j++) {
-            res = max(res, dp[j][i]);
+            res = max(res, dp[j][a - 1]);
+
         }
-    }
+
 
     cout << res;
     return 0;

@@ -33,17 +33,17 @@ int main() {
     for (int i = 2; i <= n; i++) {
         for (int j = 0; j < 10; j++) {
             if (j > 0) {
-                dp[i][j] += dp[i - 1][j - 1];
+                dp[i][j] = (dp[i][j] + dp[i - 1][j - 1]) % MOD;
             }
             if (j < 9) {
-                dp[i][j] += dp[i - 1][j + 1];
+                dp[i][j] = (dp[i][j] + dp[i - 1][j + 1]) % MOD;
             }
         }
     }
-    int res = 0;
+    long long res = 0;
     for (int i = 0; i < 10; i++) {
 
-            res += dp[n][i];
+            res = (res + dp[n][i])%MOD;
         
     }
 

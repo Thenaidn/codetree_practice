@@ -8,7 +8,7 @@ using namespace std;
 #define MOD 1000000007
 
 int n, m;
-int treasure[MAX_N][3];
+int treasure[MAX_N][101];
 int dp[MAX_N][101];
 
 void initialize() {

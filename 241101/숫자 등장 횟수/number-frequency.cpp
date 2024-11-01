@@ -19,14 +19,14 @@ int main() {
     cin >> a >> b;
 
     for (int i = 0; i < a; i++) {
-        cin >> arr[i];
-        if (m.find(arr[i]) != m.end()) {
-            int tmp = m[arr[i]];
-            m.erase(arr[i]);
-            m[arr[i]] = tmp + 1;
+        cin >> c;
+        if (m.find(c) != m.end()) {
+            int tmp = m[c];
+            m.erase(c);
+            m[c] = tmp + 1;
         }
         else {
-            m[arr[i]] = 1;
+            m[c] = 1;
         }
     }
     for (int i = 0; i < b; i++) {

@@ -6,7 +6,7 @@
 #include <string>
 using namespace std;
 
-#define MAX_N 10001
+#define MAX_N 100001
 #define MOD 1000000007
 
 int n, m;

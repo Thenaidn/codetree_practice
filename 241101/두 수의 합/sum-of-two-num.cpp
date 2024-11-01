@@ -23,27 +23,24 @@ int main() {
 
     for (int i = 0; i < n; i++) {
         cin >> arr[i];
-        umap[arr[i]] = 0;
+        umap[arr[i]]++;
     }
 
-    int res = 0;
+    int count = 0;
 
     for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            if (i == j) { continue; }
-            int sum = arr[i] + arr[j];
-            if (umap.find(sum) == umap.end()) {
-                umap[sum] = 1;
-            }
-            else {
-                int tmp = umap[sum];
-                umap.erase(sum);
-                umap[sum] = tmp + 1;
+        int target = m - arr[i];
+
+        if (umap[target] > 0) {
+            count += umap[target];
+
+            if (target == arr[i]) {
+                count--;
             }
         }
     }
 
-    cout << umap[m] / 2;
+    cout << count / 2;
 
     return 0;
 

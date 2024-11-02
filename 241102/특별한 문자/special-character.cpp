@@ -25,14 +25,15 @@ int main() {
 
     cin >> t;
 
-    for (char i : t) {
-        if (umap.find(i) == umap.end()) {
-            umap[i] = 1;
+    for (int i = 0; i < t.size(); i++) {
+        char c = t[i];
+        if (umap.find(c) == umap.end()) {
+            umap[c] = 1;
         }
         else {
-            int tmp = umap[i];
+            int tmp = umap[c];
             umap.erase(i);
-            umap[i] = ++tmp;
+            umap[c] = ++tmp;
         }
     }
    

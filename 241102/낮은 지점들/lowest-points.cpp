@@ -18,22 +18,23 @@ string t;
 
 
 int main() {
-    unordered_map<int, int> umap; // 정수를 관리할 hashmap을 선언합니다. => 빈 hashmap
+    unordered_map<long long, long long> umap; // 정수를 관리할 hashmap을 선언합니다. => 빈 hashmap
 
     cin >> n;
 
     for (int i = 0; i < n; i++) {
+        long long a; long long b;
         cin >> a >> b;
         if (umap.find(a) == umap.end()) {
             umap[a] = b;
         }
         else {
-            umap[a] = min(umap[a], b);
+            umap[a] = (umap[a] < b) ? umap[a] : b;
         }
     }
 
-    int res = 0;
-    for (pair<int, int> p : umap) {
+    long long res = 0;
+    for (pair<long long, long long> p : umap) {
         res += p.second;
     }
     cout << res;

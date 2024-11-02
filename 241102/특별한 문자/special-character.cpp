@@ -27,19 +27,10 @@ int main() {
 
     for (int i = 0; i < t.size(); i++) {
         char c = t[i];
-        if (umap.find(c) == umap.end()) {
-            umap[c] = 1;
-        }
-        else {
-            int tmp = umap[c];
-            umap.erase(i);
-            umap[c] = ++tmp;
-        }
+        umap[c]++;
     }
    
     
-    int count = 0;
-
     for (int i = 0; i < t.size(); i++) {
         char c = t[i];
         if (umap[c] == 1) {

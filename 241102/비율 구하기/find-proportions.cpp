@@ -32,7 +32,7 @@ int main() {
     // key에 해당하는 문자열이 사전순으로 앞선 쌍 부터 조회! (apple, banana, helloworld 순)
     map<string, int>::iterator it;
     for (it = m.begin(); it != m.end(); it++) {
-        double rate = (it->second) * 100 / n;
+        double rate = (it->second) * 100 / (double)n;
         cout << (it->first);
         printf(" %.4lf\n", rate);
     }

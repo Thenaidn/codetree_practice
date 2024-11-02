@@ -40,9 +40,10 @@ int main() {
     
     int count = 0;
 
-    for (pair<char, int> p : umap) {
-        if (p.second == 1) {
-            cout << p.first;
+    for (int i = 0; i < t.size(); i++) {
+        char c = t[i];
+        if (umap[c] == 1) {
+            cout << c;
             return 0;
         }
     }

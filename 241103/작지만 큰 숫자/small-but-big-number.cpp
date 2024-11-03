@@ -16,7 +16,6 @@ using namespace std;
 int n, m;
 int a, b, c, d, e;
 
-int arr[4][MAX_N];
 
 string t;
 

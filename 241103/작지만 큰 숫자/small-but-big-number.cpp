@@ -26,7 +26,7 @@ int main() {
 
     cin >> n >> m;
     set<long long> s;
-    long long a;
+    long long a, b;
     for (int i = 0; i < n; i++) {
         cin >> a;
         s.insert(a);

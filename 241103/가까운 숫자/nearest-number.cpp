@@ -28,28 +28,22 @@ int main() {
     s.insert(0);
     cin >> n;
 
-
+    int res;
     for (int i = 0; i < n; i++) { 
         cin >> b; s.insert(b); 
-        int res = INT_MAX;
-        for (int i : s) {
-            set<int>::iterator it; // iterator를 선언합니다. 
-            it = s.upper_bound(i); // x보다 큰 최초의 위치를 찾습니다.
+        if (i == 0) { res = b; cout << res << endl; }
+        else {
+            set<int>::iterator it;
+            it = s.upper_bound(b); // x보다 큰 최초의 위치를 찾습니다.
             if (it != s.end()) {
-                res = min(res, abs(i - *it));
+                res = min(res, abs(b - *it));
             }
-            
+            cout << res << endl;
         }
-        cout << res << endl;
+        
     }
-    //for (int i : s) {
-    //    set<int>::iterator it; // iterator를 선언합니다. 
-    //    it = s.upper_bound(x); // x보다 큰 최초의 위치를 찾습니다.
-    //    cout << *it << endl;   // 해당 값을 출력합니다. (10)
 
-    //    it--;                  // 한칸 전으로 이동합니다.
-    //    cout << *it << endl;   // 해당 값을 출력합니다. (6)
-    //}
+
 
     
     return 0;

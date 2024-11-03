@@ -38,6 +38,10 @@ int main() {
             if (it != s.end()) {
                 res = min(res, abs(b - *it));
             }
+            it--; it--;
+            if (it != s.end()) {
+                res = min(res, abs(b - *it));
+            }
             cout << res << endl;
         }
         

@@ -22,10 +22,11 @@ string t;
 
 
 int main() {
-
+    int n, m;
     cin >> n >> m;
     set<int> s;
     int a, b;
+
     for (int i = 0; i < n; i++) {
         cin >> a;
         s.insert(a);
@@ -33,14 +34,19 @@ int main() {
 
     for (int i = 0; i < m; i++) {
         cin >> b;
-        auto it = s.upper_bound(b);
-        it--;
-        if (it != s.end()) {
-            cout << *it << endl;
-            s.erase(*it);
-        }
-        else {
+        auto it = s.lower_bound(b);
+
+        if (it == s.begin() && *it > b) {
             cout << -1 << endl;
+            continue;
         }
+
+        if (it == s.end() || *it > b) {
+            it--;
+        }
+
+        cout << *it << endl;
+        s.erase(it);
     }
+    return 0;
 }

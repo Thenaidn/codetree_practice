@@ -45,7 +45,11 @@ int main() {
                 res = min(res, num - *it);
             }
         }
-
+        it = s.upper_bound(num - m); // x보다 큰 최초의 위치를 찾습니다.
+        if (it != s.begin()) {
+            it--;
+            res = min(res, num - *it);
+        }
 
         s.insert(num);
     }

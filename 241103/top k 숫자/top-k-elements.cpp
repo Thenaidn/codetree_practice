@@ -33,7 +33,7 @@ int main() {
         cin >> b; s.insert(b); 
     }
     set<int>::iterator it;
-    it = s.upper_bound(b - 1);
+    it = s.upper_bound(*s.rbegin() - 1);
     for (int i = 0; i < m; i++) {
         cout << *it << " ";
         it--;

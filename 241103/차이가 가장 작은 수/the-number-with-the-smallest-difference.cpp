@@ -25,29 +25,25 @@ string t;
 int main() {
     set<int> s;
 
-    s.insert(0);
     cin >> n >> m;
 
     int res = INT_MAX;
 
+    bool exist = false;
 
     for (int i = 0; i < n; i++) {
         cin >> b; s.insert(b);
             set<int>::iterator it;
-            it = s.upper_bound(b); // x보다 큰 최초의 위치를 찾습니다.
-            if (it != s.end() && abs(b - *it) >= m) {
-                res = min(res, abs(b - *it));
-            }
-            it--; it--;
-            if (it != s.end() && abs(b - *it) >= m) {
-                res = min(res, abs(b - *it));
+            it = s.upper_bound(b - m); // x보다 큰 최초의 위치를 찾습니다.
+            if (it != s.begin()) {
+                it--;
+                res = min(res, b - *it);
+                exist = true;
             }
 
     }
-    if (res == INT_MAX) {
-        cout << -1;
-    }
-    else { cout << res; }
+    if(exist){ cout << res << endl; }
+    else { cout << -1; }
     
     return 0;
 }

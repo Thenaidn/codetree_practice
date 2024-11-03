@@ -25,7 +25,8 @@ string t;
 int main() {
 
     cin >> n >> m;
-    set<int> s;
+    set<long long> s;
+    long long a;
     for (int i = 0; i < n; i++) {
         cin >> a;
         s.insert(a);

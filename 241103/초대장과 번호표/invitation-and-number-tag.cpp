@@ -34,7 +34,7 @@ int main() {
         }
     }
 
-    for (int i = m - 1; i >= 0; i--) {
+    /*for (int i = m - 1; i >= 0; i--) {
         int count = 1;
         for (int j = 1; j < groups[i].size(); j++) {
             if (set.find(groups[i][j]) != set.end()) {
@@ -47,7 +47,7 @@ int main() {
                 set.insert(groups[i][j]);
             }
         }
-    }
+    }*/
     int res = 0;
 
     for (int i = 0; i < m; i++) {

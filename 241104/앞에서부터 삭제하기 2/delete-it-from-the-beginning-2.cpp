@@ -25,23 +25,23 @@ int main() {
     float res = 0;
     cin >> n;
     //priority_queue<int> pq;
-    priority_queue<int, vector<int>, greater<int>> pq;
     for (int i = 0; i < n; i++) {
         cin >> a;
         v.push_back(a);
     }
     for (int i = 1; i < n - 2; i++) {
+        priority_queue<int, vector<int>, greater<int>> pq;
+        float sum = 0;
         for (int j = i; j < n; j++) {
             pq.push(v[j]);
-        }
+            sum += v[j];
 
-        pq.pop();
-        float sum = 0; float s = pq.size();
-        while (pq.size() > 0) {
-            sum += pq.top();
-            pq.pop();
+            if (j == n - 1) {
+                sum -= pq.top();
+                pq.pop();
+            }
         }
-        res = (res > sum / s) ? res : sum / s;
+        res = max(res, sum / pq.size());
     }
 
     printf("%.2f", res);

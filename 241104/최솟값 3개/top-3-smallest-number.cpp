@@ -32,8 +32,10 @@ int main() {
             b = pq.top(); pq.pop();
             c = pq.top(); pq.pop();
             d = pq.top(); pq.pop();
-
-            cout << b * c * d << endl;
+            long long result = b;
+            result *= c;
+            result *= d;
+            cout << result << endl;
 
             pq.push(b);
             pq.push(c);

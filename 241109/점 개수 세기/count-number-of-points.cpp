@@ -34,7 +34,7 @@ int main() {
         if (x22 == mapper.end()) {
             x22--;
             if (x22->first > b) {
-                x22 == mapper.end();
+                x22 = mapper.end();
             }
         }
         else {

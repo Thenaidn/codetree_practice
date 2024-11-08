@@ -4,7 +4,7 @@
 using namespace std;
 
 int main() {
-    int arr[100001] = { 0 };
+    short arr[1000001] = { 0 };
     vector<int> v;
     int n, q;
     cin >> n >> q;
@@ -13,7 +13,7 @@ int main() {
 
     for (int i = 0; i < n; i++) {
         cin >> afds;
-        for (int i = afds; i < 100001; i++) { arr[i]++; }
+        for (int i = afds; i < 1000001; i++) { arr[i]++; }
         //v.push_back(arr[i]);
     }
     //sort(v.begin(), v.end());

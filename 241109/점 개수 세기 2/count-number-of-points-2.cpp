@@ -28,7 +28,7 @@ int main() {
         cin >> a >> b >> c >> d;
         int res = 0;
 
-        int x1, x2 = 0;
+        int x1 = 0; int x2 = 0;
         
         for (int i = 1; i <= mapper.size(); i++) {
             if (mapper[i].first >= a) {
@@ -42,13 +42,17 @@ int main() {
                 break;
             }
         }
-        res = x2 - x1 + 1;
+        
+        if (x2 > 0 && x1 > 0) {
+            res = x2 - x1 + 1;
 
-        for (int i = x1; i <= x2; i++) {
-            if (mapper[i].second < b || mapper[i].second > d) {
-                res--;
+            for (int i = x1; i <= x2; i++) {
+                if (mapper[i].second < b || mapper[i].second > d) {
+                    res--;
+                }
             }
         }
+        
         cout << res << endl;
     }
 

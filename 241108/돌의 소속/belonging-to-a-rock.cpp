@@ -4,14 +4,14 @@
 using namespace std;
 
 int main() {
-    int arr[1001] = { 0 };
-    int prefix_sum[1001] = {};
+    int arr[100001] = { 0 };
+    int prefix_sum[100001] = {};
 
-    int arr2[1001] = { 0 };
-    int prefix_sum2[1001] = {};
+    int arr2[100001] = { 0 };
+    int prefix_sum2[100001] = {};
 
-    int arr3[1001] = { 0 };
-    int prefix_sum3[1001] = {};
+    int arr3[100001] = { 0 };
+    int prefix_sum3[100001] = {};
 
     int a, b, c; cin >> a >> b;
     int z;

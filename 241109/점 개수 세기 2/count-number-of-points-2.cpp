@@ -2,6 +2,7 @@
 #include <set>
 #include <unordered_map>
 #include <utility>
+#include <map>
 
 using namespace std;
 
@@ -16,10 +17,14 @@ int main() {
         edges[i] = { a,b };
         nums.insert(edges[i]);
     }
-    unordered_map<int, pair<int, int>> mapper;
+    map<int, int> mapper;
+    map<int, int> mappery;
     int cnt = 1;
-    for (auto i : nums) {
-        mapper[cnt] = i;
+    for (pair<int, int> i : nums) {
+        int x, y;
+
+        mapper[i.first] = cnt;
+        mappery[cnt] = i.second;
         cnt++;
     }
 
@@ -28,31 +33,48 @@ int main() {
         cin >> a >> b >> c >> d;
         int res = 0;
 
-        int x1 = 0; int x2 = 0;
+        int x1, x2;
+
+        auto x11 = mapper.lower_bound(a);
+
+
+        auto x22 = mapper.lower_bound(c + 1);
         
-        for (int i = 1; i <= mapper.size(); i++) {
-            if (mapper[i].first >= a) {
+        if (x22 == mapper.end()) {
+            x22--;
+            if (x22->first > c) {
+                x22 == mapper.end();
+            }
+        }
+        else {
+            x22--;
+        }
+
+        /*for (int i = 1; i <= mapper.size(); i++) {
+            if (mapper[i] >= a) {
                 x1 = i;
                 break;
             }
-        }
-        for (int i = mapper.size(); i >= x1; i--) {
-            if (mapper[i].first <= c) {
+        }*/
+        /*for (int i = mapper.size(); i >= x1; i--) {
+            if (mapper[i] <= c) {
                 x2 = i;
                 break;
             }
-        }
-        
-        if (x2 > 0 && x1 > 0) {
+        }*/
+
+        if (x11 != mapper.end() && x22 != mapper.end()) {
+            x1 = x11->second; x2 = x22->second;
+            
             res = x2 - x1 + 1;
 
             for (int i = x1; i <= x2; i++) {
-                if (mapper[i].second < b || mapper[i].second > d) {
+                if (mappery[i] < b || mappery[i] > d) {
                     res--;
                 }
             }
         }
-        
+
         cout << res << endl;
     }
 

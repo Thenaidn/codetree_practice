@@ -34,6 +34,7 @@ int main() {
     
     int m = INT_MIN;
     for (int j = 0; j < 3; j++) {
+        m = max(m, L[j][n]);
         for (int i = 1; i <= n - 1; i++) {
             m = max(m, L[j][i] + max(R[(j + 1) % 3][i + 1], R[(j + 2) % 3][i + 1]));
         }

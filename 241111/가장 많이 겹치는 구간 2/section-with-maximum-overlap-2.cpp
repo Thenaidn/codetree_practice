@@ -40,55 +40,21 @@ int main() {
     int res = 0;
     int sum_val = 0;
     int tmp = 0;
-    for (int j = 0; j <= 2 * n - 1; j++) {
-        int k = points[j].first;
         for (int i = 0; i < 2 * n; i++) {
             int x, v;
             tie(x, v) = points[i];
 
             // x가 k 이상이 되면 종료합니다.
-            if (x >= k)
-                break;
+            //if (x >= k)
+            //    break;
 
             // 적혀있는 가중치를 전부 더해줍니다.
             sum_val += v;
+            res = max(sum_val, res);
         }
         res = max(sum_val, res);
         sum_val = 0;
-    }
-    tmp = 0;
-    for (int j = 0; j <= 2 * n - 1; j++) {
-        int k = points[j].second;
-        for (int i = 0; i < 2 * n; i++) {
-            int x, v;
-            tie(x, v) = points[i];
-
-            // x가 k 이상이 되면 종료합니다.
-            if (x >= k)
-                break;
-
-            // 적혀있는 가중치를 전부 더해줍니다.
-            sum_val += v;
-        }
-        res = max(sum_val, res);
-        sum_val = 0;
-    }
-    for (int j = 0; j <= 2 * n - 1; j++) {
-        int k = points[j].second - 1;
-        for (int i = 0; i < 2 * n; i++) {
-            int x, v;
-            tie(x, v) = points[i];
-
-            // x가 k 이상이 되면 종료합니다.
-            if (x >= k)
-                break;
-
-            // 적혀있는 가중치를 전부 더해줍니다.
-            sum_val += v;
-        }
-        res = max(sum_val, res);
-        sum_val = 0;
-    }
+    
     // x = k에 겹쳐져 있는 선분의 수 = 2
     cout << res << endl;
     return 0;

@@ -26,17 +26,24 @@ int main() {
     for (int i = n - 1; i >= 1; i--)
         R[i] = R[i + 1] + arr[i];
 
-    int m = 0;
+    long long m = 0;
     for (int i = 2; i <= n - 2; i++) {
         
         if (L[i] == R[i + 1]) {
+            int left = 0;
             for (int j = 1; j < i; j++) {
-                for (int k = i + 1; k <= n - 1; k++) {
-                    if (L[j] == L[i] - L[j] && L[k] - L[i] == R[k + 1]) {
-                        m++;
+                    if (L[j] == L[i] - L[j]) {
+                        left++;
                     }
+                
+            }
+            int right = 0;
+            for (int k = i + 1; k <= n - 1; k++) {
+                if (L[k] - L[i] == R[k + 1]) {
+                    right++;
                 }
             }
+            m += (left * right);
         }
     }
 

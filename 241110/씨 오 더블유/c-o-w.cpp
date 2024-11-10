@@ -31,7 +31,7 @@ int main() {
 
 
 
-    int res = 0;
+    long long res = 0;
     int m = INT_MIN;
     //m = max(m, L[j][n]);
     for (int i = 1; i < n - 1; i++) {

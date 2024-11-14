@@ -22,9 +22,12 @@ int main() {
 
     for (int i : fire) {
         auto it = fighter.lower_bound(i);
-        int upper = *it; 
+        int upper;
+        if (it != fighter.end()) {
+            int upper = *it;
+            res = max(res, abs(i - upper));
+        }
         int lower;
-        res = max(res, abs(i - upper));
         if (it != fighter.begin()) {
             it--;
             lower = *it;

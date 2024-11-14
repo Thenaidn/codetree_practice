@@ -20,9 +20,13 @@ int main() {
 
         if (in >= k) {
             res = min(res, i - left + 1);
-            int count = 0;
-            left = i;
-            in--;
+            while(in >= k - 1){
+                if(t[left] == 1){
+                    in--;
+                }
+                left++;
+            }
+            left--; in++;
         }
 
         

@@ -1,41 +1,53 @@
 #include <iostream>
-#include<string>
 #include <set>
+#include <cmath>
+#include <climits>
 using namespace std;
 
 int main() {
-    int t[100000]; int k; int n;
-    int left = 0; int right = 1;
     int a, b;
     cin >> a >> b;
-    set<int> fire;
-    set<int> fighter;
+
+    set<int> fire;  
+    set<int> fighter; 
+
     for (int i = 0; i < a; i++) {
-        int c; cin >> c;
+        int c;
+        cin >> c;
         fire.insert(c);
     }
+
+
     for (int i = 0; i < b; i++) {
-        int c; cin >> c;
+        int c;
+        cin >> c;
         fighter.insert(c);
     }
-    int res = 0;
+
+    int res = 0; 
+
 
     for (int i : fire) {
+
         auto it = fighter.lower_bound(i);
-        int upper;
+        int dist = INT_MAX;
+
+ 
         if (it != fighter.end()) {
-            int upper = *it;
-            res = max(res, abs(i - upper));
+            dist = abs(i - *it);
         }
-        int lower;
+
+
         if (it != fighter.begin()) {
             it--;
-            lower = *it;
-            res = max(res, abs(i - lower));
+            dist = min(dist, abs(i - *it));
         }
+
+
+        res = max(res, dist);
     }
-    
-    
+
+
     cout << res;
     return 0;
 }

@@ -26,6 +26,7 @@ int main() {
 
         
     }
-    cout << res;
+    if(res == INT_MAX){cout << -1;}
+    else{cout << res;}
     return 0;
 }

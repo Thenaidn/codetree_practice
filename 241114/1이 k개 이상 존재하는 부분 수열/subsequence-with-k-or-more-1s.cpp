@@ -9,6 +9,7 @@ int main() {
     int left = 0; int right = 1;
     int in = 0;
     cin >> n >> k;
+    if(k==1){cout << k; return 0;}
     for (int i = 0; i < n; i++) { cin >> t[i]; }
     if (t[0] == 1) { in = 1; }
     int res = INT_MAX;

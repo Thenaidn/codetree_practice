@@ -31,7 +31,7 @@ int main() {
     cin >> n; long long a, b; cin >> a >> b;
     int mi = n; int ma = 0;
     for(int i=a;i<=b;i++){
-        long long res = search(i);
+        int res = search(i);
         mi = min(mi,res);
         ma = max(ma,res);
     }

@@ -1,16 +1,16 @@
 #include <iostream>
 using namespace std;
 
-int n;
+long long n;
 int arr[100000] = {0,};
-int search(int target){
+int search(long long target){
     int idx = -2;
     int count = 0;
     // 이진탐색을 진행합니다.
-    int left = 1, right = n;
+    long long left = 1, right = n;
     while (left <= right) {
         count++;
-        int mid = (left + right) / 2;
+        long long mid = (left + right) / 2;
         if(mid == target) { // 찾았다면 해당 index를 반환합니다.
             idx = mid;
             break;
@@ -28,7 +28,7 @@ int search(int target){
 
 int main() {
     // 여기에 코드를 작성해주세요.
-    cin >> n; int a, b; cin >> a >> b;
+    cin >> n; long long a, b; cin >> a >> b;
     int mi = INT_MAX; int ma = INT_MIN;
     for(int i=a;i<=b;i++){
         int res = search(i);

@@ -1,36 +1,31 @@
 #include <iostream>
-#include <unordered_set>
+#include <cmath>
 using namespace std;
 
-long long n;
-int arr[100000] = {0,};
-int search(long long target){
-
-    int count = 0;
-    // 이진탐색을 진행합니다.
+long long countTurns(long long n, long long target) {
     long long left = 1, right = n;
+    int turns = 0;
+
     while (left <= right) {
-        count++;
+        turns++;
         long long mid = (left + right) / 2;
-        if(mid == target) { // 찾았다면 해당 index를 반환합니다.
-            return count;
-            break;
-        }
-        
-        if(mid > target) // 찾으려는 숫자가 더 작다면
-            right = mid - 1;  // 왼쪽 구간으로 이동해야 합니다.
-        else                  // 찾으려는 숫자가 더 크다면
-            left = mid + 1;   // 오른쪽 구간으로 이동해야 합니다.
+        if (mid == target) break;
+        else if (mid > target) right = mid - 1;
+        else left = mid + 1;
     }
+    return turns;
 }
 
-
 int main() {
-     ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-    // 여기에 코드를 작성해주세요.
-    cin >> n; long long a, b; cin >> a >> b;
-    int mi = n; int ma = 0;
+    ios::sync_with_stdio(0);
+    cin.tie(0);
 
-    cout << search((a+b)/2) << " " << max(search(a), search(b));
+    long long n, a, b;
+    cin >> n >> a >> b;
+
+    int minTurns = countTurns(n, (a + b) / 2);
+    int maxTurns = max(countTurns(n, a), countTurns(n, b)); 
+
+    cout << minTurns << " " << maxTurns;
     return 0;
 }

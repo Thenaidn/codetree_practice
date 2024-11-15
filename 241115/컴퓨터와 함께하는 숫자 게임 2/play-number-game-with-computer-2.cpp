@@ -30,11 +30,7 @@ int main() {
     // 여기에 코드를 작성해주세요.
     cin >> n; long long a, b; cin >> a >> b;
     int mi = n; int ma = 0;
-    for(long long i=a;i<=b;i++){
-        int res = search(i);
-        mi = min(mi,res);
-        ma = max(ma,res);
-    }
-    cout << mi << " " << ma;
+
+    cout << search((a+b)/2) << " " << max(search(a), search(b));
     return 0;
 }

@@ -26,21 +26,21 @@ int main() {
 
     
     int left = 1; 
-    long long right = points[m - 1] * n;
+    long long right = points[0] * n;
     int result = INT_MAX;
 
     while (left <= right) {
         int mid = left + (right - left) / 2;
 
-        
+
         if (isPossible(points, n, mid)) {
-            result = min(result, mid);
+            result = mid;
             right = mid - 1;
-          
         }
         else {
-            left = mid + 1;
+            left = mid + 1; 
         }
+
     }
 
     cout << result << endl;

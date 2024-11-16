@@ -3,47 +3,45 @@
 #include <algorithm>
 using namespace std;
 
-bool isPossible(vector<int> points, int m, int d) {
-    int count = 1; 
-    int last_position = points[0];
+bool isPossible(const vector<pair<int, int>>& segments, int n, int d) {
+    int count = 0;
+    int last_position = -1e9;
 
-    for (int i = 1; i < points.size(); i++) {
-        if (points[i] - last_position >= d) {
+    for (const auto& segment : segments) {
+        int start = max(segment.first, last_position + d);
+        while (start <= segment.second) {
             count++;
-            last_position = points[i];
-            if (count >= m) return true;
+            last_position = start;
+            start += d;
+            if (count >= n) return true;
         }
     }
-    return false;
+
+    return count >= n;
 }
 
 int main() {
     int n, m;
     cin >> n >> m;
 
-    vector<int> points;
+    vector<pair<int, int>> segments(m);
     for (int i = 0; i < m; i++) {
-        int a, b; cin >> a  >> b;
-        for(int j=b;j>=a;j--){
-            points.push_back(j);
-        }
+        cin >> segments[i].first >> segments[i].second;
     }
-    sort(points.begin(), points.end());
 
-    
-    int left = 1; 
-    int right = points[points.size() - 1] - points[0];
+    sort(segments.begin(), segments.end());
+
+    int left = 1;
+    int right = 1e9;
     int result = 0;
 
     while (left <= right) {
         int mid = left + (right - left) / 2;
 
-        
-        if (isPossible(points, n, mid)) {
+        if (isPossible(segments, n, mid)) {
             result = mid;
             left = mid + 1;
-        }
-        else {
+        } else {
             right = mid - 1;
         }
     }

@@ -9,7 +9,7 @@ int main() {
     cin >> n;
 
     long long left = 1;                          // 가장 작은 숫자 값을 설정합니다.
-    long long right = 1000000000;                        // 가장 큰 숫자 값을 설정합니다.
+    long long right = 9223372036854775807;                        // 가장 큰 숫자 값을 설정합니다.
     long long min_num = 0;                      // 최소이므로, 답이 될 수 있는 값보다 더 큰 값으로 설정합니다.
     while (left <= right) {                // [left, right]가 유효한 구간이면 계속 수행합니다.
         long long mid = (left + right) / 2;      // 가운데 위치를 선택합니다.

@@ -5,10 +5,10 @@
 
 using namespace std;
 
-bool isPossible(vector<int> points, int n, int d) {
+bool isPossible(vector<int> points, int n, long long d) {
     long long total = 0;
     for (int time : points) {
-        total += d / time; 
+        total += d / time;
     }
     return total >= n;
 
@@ -24,13 +24,13 @@ int main() {
     }
     sort(points.begin(), points.end());
 
-    
-    int left = 1; 
-    long long right = points[0] * n;
-    int result = INT_MAX;
+
+    long long left = 1;
+    long long right = (long long)points[0] * n;
+    long long result = right;
 
     while (left <= right) {
-        int mid = left + (right - left) / 2;
+        long long mid = left + (right - left) / 2;
 
 
         if (isPossible(points, n, mid)) {
@@ -38,7 +38,7 @@ int main() {
             right = mid - 1;
         }
         else {
-            left = mid + 1; 
+            left = mid + 1;
         }
 
     }

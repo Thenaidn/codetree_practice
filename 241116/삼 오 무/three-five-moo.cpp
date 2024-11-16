@@ -14,7 +14,11 @@ int main() {
     while (left <= right) {                // [left, right]가 유효한 구간이면 계속 수행합니다.
         long long mid = (left + right) / 2;      // 가운데 위치를 선택합니다.
         long long tmp = mid - (mid / 3) - (mid / 5) + (mid / 15);
-        if(tmp == n){cout << mid; return 0;}
+        if(tmp == n){
+            mid-=1;
+            if(mid - (mid / 3) - (mid / 5) + (mid / 15) != n){mid++;}
+            cout << mid; 
+            return 0;}
         if(tmp > n){right = mid - 1;}
         else{left = mid+1;}
     }

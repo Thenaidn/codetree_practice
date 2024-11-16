@@ -5,34 +5,13 @@
 
 using namespace std;
 
-int use[100001] = { INT_MAX, };
-bool isPossible(vector<int> points, int n, int m, int d) {
-    int count = n; 
-    for (int i = 0; i < m; i++) {
-        if (points[i] <= d) {
-            use[i] = points[i];
-            count--;
-        }
+bool isPossible(vector<int> points, int n, int d) {
+    long long total = 0;
+    for (int time : points) {
+        total += d / time; 
     }
+    return total >= n;
 
-    while (d > 0) {
-        for (int i = 0; i < m; i++) {
-            if (use[i] > 0) { use[i]--; }
-            if (use[i] == 0 && points[i] <= d) {
-                use[i] = points[i];
-                count--;
-            }
-        }
-
-
-        d--;
-    }
-    for (int i = 0; i < m; i++) { 
-        if (use[i] > 0) { count++; }
-        use[i] = INT_MAX; 
-    }
-       
-    return count <= 0;
 }
 
 int main() {
@@ -47,14 +26,14 @@ int main() {
 
     
     int left = 1; 
-    int right = points[m - 1] * n;
+    long long right = points[m - 1] * n;
     int result = INT_MAX;
 
     while (left <= right) {
         int mid = left + (right - left) / 2;
 
         
-        if (isPossible(points, n, m, mid)) {
+        if (isPossible(points, n, mid)) {
             result = min(result, mid);
             right = mid - 1;
           

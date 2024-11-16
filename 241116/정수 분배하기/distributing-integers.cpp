@@ -43,7 +43,7 @@ int main() {
         else                               
             right = mid - 1;                // 결정문제에 대한 답이 No라면 left를 바꿔줍니다.
     }
-
+    if(ans==INT_MIN){ans=0;}
     cout << ans;
     return 0;
 }

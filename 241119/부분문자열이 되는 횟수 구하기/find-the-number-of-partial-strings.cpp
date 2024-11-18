@@ -1,60 +1,36 @@
 #include <iostream>
 #include <vector>
-#include <tuple>
+#include <string>
 #include <algorithm>
-#include <unordered_map>
-#include <climits>
-#include <queue>
-#include <set>
 
 using namespace std;
 
-int a, b, c, d, e, n, m, k;
+int a, b, n, m;
 string t, t2;
 
-set<int> s[26];
-set<int> s2[26];
-set<int> exclude;
+vector<int> order;
+vector<vector<int>> nextPos;
 
-bool IsPossible() {
-    for (int i = 0; i < 26; i++) {
-        s2[i] = s[i];
-        for (int j : exclude) {
-            if (s2[i].find(j) != s2[i].end()) {
-                s2[i].erase(j);
-            }
-        }
+bool IsPossible(int mid) {
+    vector<bool> deleted(t.size(), false);
+
+
+    for (int i = 0; i < mid; i++) {
+        deleted[order[i]] = true;
     }
 
-    int prev = -1;
-    for (int i = 0; i < t2.length(); i++) {
-        if (s2[t2[i] - 'a'].empty()) { 
-            return false;
-        }
 
-        auto it = s2[t2[i] - 'a'].begin();
-        if (it != s2[t2[i] - 'a'].end()) {
-            int latest = *it;
-            if (latest < prev) {
-                while (!s2[t2[i] - 'a'].empty()) {
-                    s2[t2[i] - 'a'].erase(latest);
-                    it = s2[t2[i] - 'a'].begin();
-                    if (it != s2[t2[i] - 'a'].end()) {
-                        latest = *it;
-                    }
-                    if (latest >= prev) { break; }
-                }
-                if (latest < prev) { return false; }
-            }
-            prev = latest;
-            s2[t2[i] - 'a'].erase(latest);
+    int pos = 0; 
+    for (int i = 0; i < t.size(); i++) {
+        if (deleted[i]) { continue; }
+
+        if (t[i] == t2[pos]) {
+            pos++;
+            if (pos == t2.size()) { return true; }
         }
     }
-
-    return true;
+    return false; 
 }
-
-
 
 int main() {
     ios::sync_with_stdio(false);
@@ -62,19 +38,29 @@ int main() {
 
     cin >> t >> t2;
 
-    for (int i = 0; i < t.length(); i++) {
-        s[t[i] - 'a'].insert(i);
+    int len = t.size();
+    order.resize(len);
+
+    for (int i = 0; i < len; i++) {
+        cin >> order[i];
+        order[i]--;
     }
 
-    int res = 0;
-    for (int i = 0; i < t.length(); i++) {
-        if (IsPossible()) { res++; }
-        cin >> a;
-        exclude.insert(a - 1);
-    }
-    if (IsPossible()) { res++; }
+    int left = 0; int right = len; int res = 0;
 
-    cout << res;
+    while (left <= right) {
+        int mid = (left + right) / 2;
+
+        if (IsPossible(mid)) {
+            res = mid + 1;
+            left = mid + 1;
+        }
+        else {
+            right = mid - 1;
+        }
+    }
+
+    cout << res << endl;
 
     return 0;
 }

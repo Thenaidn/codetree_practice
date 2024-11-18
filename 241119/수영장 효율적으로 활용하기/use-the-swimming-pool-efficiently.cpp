@@ -11,6 +11,7 @@ bool isPossible(const vector<int>& times, int m, long long maxLoad) {
     long long currentLoad = 0;
 
     for (int time : times) {
+        if (time > maxLoad) { return false; }
         if (currentLoad + time <= maxLoad) {
             currentLoad += time;
         }
@@ -33,7 +34,7 @@ int main() {
     }
 
     long long left = 1;
-    long long right = 144000000;
+    long long right = 1440;
     long long result = right;
 
 

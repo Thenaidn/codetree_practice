@@ -34,7 +34,7 @@ int main() {
     }
 
     long long left = 1;
-    long long right = 1440;
+    long long right = 144000000;
     long long result = right;
 
 

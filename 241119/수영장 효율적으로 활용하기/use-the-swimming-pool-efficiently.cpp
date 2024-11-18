@@ -6,9 +6,9 @@
 using namespace std;
 
 
-bool isPossible(const vector<int>& times, int m, int maxLoad) {
+bool isPossible(const vector<int>& times, int m, long long maxLoad) {
     int lanes = 1;
-    int currentLoad = 0;
+    long long currentLoad = 0;
 
     for (int time : times) {
         if (currentLoad + time <= maxLoad) {
@@ -32,13 +32,13 @@ int main() {
         cin >> times[i];
     }
 
-    int left = 1;
-    int right = 1440;
-    int result = right;
+    long long left = 1;
+    long long right = 1440;
+    long long result = right;
 
 
     while (left <= right) {
-        int mid = left + (right - left) / 2;
+        long long mid = left + (right - left) / 2;
 
         if (isPossible(times, m, mid)) {
             result = mid;

@@ -1,112 +1,87 @@
 #include <iostream>
-#include <vector>
-#include <tuple>
 #include <algorithm>
-#include <unordered_map>
-#include <climits>
 #include <queue>
+
+#define MAX_N 100
+#define MAX_H 500
+
 using namespace std;
 
-int a, b, c, d, e;
-int dy[4] = { 0, 1, 0, -1 };
-int dx[4] = { 1, 0, -1, 0 };
+const int dy[4] = {-1, 0, 1, 0};
+const int dx[4] = {0, -1, 0, 1};
 
-#define VERTICES_NUM 1005
-#define EDGES_NUM 6
+// 변수 선언
+int n, m;
+int board[MAX_N][MAX_N];
+bool visited[MAX_N][MAX_N];
 
-int grid[VERTICES_NUM][VERTICES_NUM] = { 0 };
-int answer[VERTICES_NUM][VERTICES_NUM];
-bool visited[VERTICES_NUM][VERTICES_NUM] = { false };
-int color[VERTICES_NUM][VERTICES_NUM] = { 0 };
+// bfs를 이용해 이동합니다. visited 배열로 끝까지 도달할 수 있는지 확인합니다.
+void bfs(int x, int y, int lo, int hi) {
+    queue<pair<int, int>> q;
+    q.push({x, y});
+    visited[x][y] = true;
 
-int ma = 0; int mi = INT_MAX;
-
-int order = -1;
-queue<pair<int, int>> q;
-int cnt = 0; int cntc;
-bool isinside(int y, int x) {
-    return y >= 0 && y < a && x >= 0 && x < b;
-}
-bool cango(int ny, int nx, int y, int x, int mid) {
-    if (!isinside(ny, nx)) { return false; }
-    if (visited[ny][nx] || abs(ma - grid[ny][nx]) > mid || abs(mi - grid[ny][nx]) > mid) {
-        return false;
-    }
-    ma = max(ma, grid[ny][nx]);
-    mi = min(mi, grid[ny][nx]);
-    return true;
-}
-void push(int y, int x) {
-    answer[y][x] = order--;
-    visited[y][x] = true;
-    q.push(make_pair(y, x));
-}
-
-void bfs(int mid) {
     while (!q.empty()) {
-        pair<int, int> cp = q.front();
+        auto [x, y] = q.front();
         q.pop();
-
-        int y = cp.first;
-        int x = cp.second;
-        if (color[y][x] == 1) { cnt++; }
-
-        for (int i = 0; i < 4; i++) {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-            if (cango(ny, nx, y, x, mid)) {
-                push(ny, nx);
-                
+        for (int dir = 0; dir < 4; dir++) {
+            int nx = x + dx[dir];
+            int ny = y + dy[dir];
+            if (nx >= 0 && nx < n && ny >= 0 && ny < m && board[nx][ny] >= lo && board[nx][ny] <= hi && visited[nx][ny] == false) {
+                q.push({nx, ny});
+                visited[nx][ny] = true;
             }
         }
     }
 }
 
+// visited 배열을 초기화합니다.
+void clear_visited() {
+    for(int i = 0; i < n; i++)
+        for(int j = 0; j < m; j++) visited[i][j] = false;
+}
 
-bool IsPossible(int mid) {
-    push(0, 0);
-    ma = grid[0][0]; mi = grid[0][0];
-    bfs(mid);
-    bool able = visited[a - 1][b - 1];
-    for (int i = 0; i < a; i++) {
-        for (int j = 0; j < b; j++) {
-            visited[i][j] = false;
-        }
+// d 이하로 최대 높이와 최소 높이의 차이가 나는 칸만 갈 수 있을 때,
+// 마지막 칸으로 이동할 수 있는지 확인합니다.
+bool reachable(int d) {
+    // 모든 높이 제한에 대해서, 도달 가능한지 확인합니다.
+    for(int lo = 1; lo <= MAX_H; lo++) {
+        clear_visited();
+
+        int hi = lo + d;
+        // 만약 시작하는 위치의 높이가 lo이상 hi이하라면 dfs로 탐색합니다.
+        if(board[0][0] >= lo && board[0][0] <= hi)
+            bfs(0, 0, lo, hi);
+        // 마지막에 도달할 수 있으면 도달 가능합니다.
+        if(visited[n - 1][m - 1]) return true;
     }
-    return able;
+
+    return false;
 }
 
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(NULL);
+    // 입력
+    cin >> n >> m;
 
+    for(int i = 0; i < n; i++)
+        for(int j = 0; j < m; j++)
+            cin >> board[i][j];
 
+    int lo = 0;                     // 답이 될 수 있는 가장 작은 숫자 값을 설정합니다.
+    int hi = MAX_H;                 // 답이 될 수 있는 가장 큰 숫자 값을 설정합니다.
+    int ans = MAX_H;                // 답을 저장합니다.
 
-    cin >> a >> b;
-
-    for (int i = 0; i < a; i++) {
-        for (int j = 0; j < b; j++) {
-            cin >> grid[i][j];
-        }
-    }
-
-    int left = 0;
-    int right = 500;
-    int ans = right;
-
-    while (left <= right) {
-        int mid = (left + right) / 2;
-        if (IsPossible(mid)) {
-            right = mid - 1;
-            ans = min(ans, mid);
+    while(lo <= hi) {               // [lo, hi]가 유효한 구간이면 계속 수행합니다.
+        int mid = (lo + hi) / 2;    // 가운데 위치를 선택합니다.
+        if(reachable(mid)) {        // 결정문제에 대한 답이 Yes라면
+            hi = mid - 1;           // 왼쪽에 조건을 만족하는 숫자가 더 있을 가능성 때문에 right를 바꿔줍니다.
+            ans = min(ans, mid);    // 답의 후보들 중 최솟값을 계속 갱신해줍니다.
         }
         else
-            left = mid + 1;
+            lo = mid + 1;           // 결정문제에 대한 답이 No라면 right를 바꿔줍니다.
     }
 
+    // 정답을 출력합니다.
     cout << ans;
-
-
-
-    return 0;
+    return 0;   
 }

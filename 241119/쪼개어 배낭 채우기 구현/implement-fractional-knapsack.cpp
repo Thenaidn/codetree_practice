@@ -4,7 +4,7 @@
 
 using namespace std;
 
-bool compare(pair<float, float> a, pair<float, float> b) {
+bool compare(pair<double, double> a, pair<double, double> b) {
     if (a.second / a.first == b.second / b.first) {
         return a.first > b.first;
     }
@@ -16,15 +16,15 @@ bool compare(pair<float, float> a, pair<float, float> b) {
 int main() {
     // 여기에 코드를 작성해주세요.
     int n, m; cin >> n >> m;
-    vector<pair<float, float>> jewels(n);
+    vector<pair<double, double>> jewels(n);
 
     for (int i = 0; i < n; i++) {
-        float a, b; cin >> a >> b;
+        double a, b; cin >> a >> b;
         jewels[i] = { a,b };
     }
 
     sort(jewels.begin(), jewels.end(), compare);
-    float res = 0;
+    double res = 0;
 
     for (int i = 0; i < n; i++) {
         if (m == 0) { break; }
@@ -34,7 +34,7 @@ int main() {
             res += jewels[i].second;
         }
         else {
-            res += m * jewels[i].second / jewels[i].first ;
+            res += m * jewels[i].second / jewels[i].first;
             m = 0;
         }
     }

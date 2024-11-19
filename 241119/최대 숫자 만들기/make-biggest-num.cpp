@@ -9,9 +9,7 @@ using namespace std;
 // a가 더 앞, b가 더 뒤에 오는 것이 맞다면
 // true / 아니라면 false가 되게끔 만들면 됩니다.
 bool cmp(int a, int b) {
-    string t = to_string(a) + to_string(b);
-    string t2 = to_string(b) + to_string(a);
-    return stoll(t) > stoll(t2);
+    return to_string(a) + to_string(b) > to_string(b) + to_string(a);
 }
 
 int main() {

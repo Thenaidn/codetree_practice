@@ -36,7 +36,7 @@ int main() {
     for (int i = 1; i <= m; i++) {
         int x, y, z; cin >> x >> y >> z;
         //tie(x, y, z) = edges[i];
-        graph[x].push_back(make_pair(y, z));
+        //graph[x].push_back(make_pair(y, z));
         graph[y].push_back(make_pair(x, z));
     }
 

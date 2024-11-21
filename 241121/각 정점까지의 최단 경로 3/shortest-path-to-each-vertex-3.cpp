@@ -78,10 +78,9 @@ int main() {
     }
 
     // 시작점(5번 정점)으로부터 각 지점까지의 최단거리 값을 출력합니다.
+
     for(int i = 2; i <= n; i++){
-        if(dist[i] == (int)1e9){cout << -1; return 0;}
-    }
-    for(int i = 2; i <= n; i++){
+        if(dist[i] == (int)1e9){dist[i] = -1;}
          cout << dist[i] << "\n";
     }   
 

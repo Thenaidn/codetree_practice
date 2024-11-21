@@ -3,7 +3,7 @@
 #include <tuple>
 #include <queue>
 #include <algorithm>
-#define MAX_N 20001
+#define MAX_N 100001
 
 using namespace std;
 

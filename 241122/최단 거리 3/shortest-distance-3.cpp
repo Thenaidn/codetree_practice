@@ -2,7 +2,7 @@
 #include <vector>
 #include <tuple>
 
-#define MAX_N 100000
+#define MAX_N 1000
 
 using namespace std;
 

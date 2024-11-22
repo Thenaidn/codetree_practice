@@ -43,7 +43,7 @@ int dy[4] = { 1,0,-1,0 };
 int main() {
     int n, a, b;
     cin >> n >> a >> b;
-
+    if(n==1){cout << 0; return 0;}
     // 그래프 입력
     for (int i = 0; i < n; i++) {
         cin >> grid[i];

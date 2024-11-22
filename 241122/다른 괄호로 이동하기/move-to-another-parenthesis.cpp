@@ -43,7 +43,7 @@ int dy[4] = { 1,0,-1,0 };
 int main() {
     int n, a, b;
     cin >> n >> a >> b;
-    if(n==1){cout << 0; return 0;}
+
     // 그래프 입력
     for (int i = 0; i < n; i++) {
         cin >> grid[i];
@@ -65,18 +65,24 @@ int main() {
             }
         }
     }
-    
-
-    // 다익스트라 실행
-    dijkstra(1, dist_from_a, n * n);
-    dijkstra(3, dist_from_b, n * n);
-
-    // 각 정점에서 a, b, c 중 가장 가까운 거리의 최대값 계산
     int max_distance = 0;
-    for (int i = 1; i <= n * n; i++) {
-        max_distance = max(max_distance, max(dist_from_a[i], dist_from_b[i]));
+    for (int k = 1; k <= n * n; k++) {
+        dijkstra(k, dist_from_a, n * n);
+        for (int i = 1; i <= n * n; i++) {
+            max_distance = max(max_distance, dist_from_a[i]);
 
+        }
     }
+    // 다익스트라 실행
+    //dijkstra(1, dist_from_a, n * n);
+    //dijkstra(3, dist_from_b, n * n);
+
+    //// 각 정점에서 a, b, c 중 가장 가까운 거리의 최대값 계산
+    //
+    //for (int i = 1; i <= n * n; i++) {
+    //    max_distance = max(max_distance, max(dist_from_a[i], dist_from_b[i]));
+
+    //}
 
     // 결과 출력
     cout << max_distance << endl;

@@ -62,6 +62,8 @@ int main() {
     // 각 정점에서 a, b, c 중 가장 가까운 거리의 최대값 계산
     int max_closest_distance = INF;
     for (int i = 1; i <= n; i++) {
+        if(i==a||i==b){continue;}
+
         dijkstra(i, dist_from_b, n);
 
         int closest_distance = min((dist_from_b[a] + dist_from_b[b])*2, 

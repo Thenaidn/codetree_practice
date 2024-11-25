@@ -48,12 +48,15 @@ int main() {
     int sum = 0;
     for(int i=0;i<q;i++){
         int a, b; cin >> a >> b;
+        bool exist = false;
+        int mi = (int)1e9;
         for(int j=1;j<=p;j++){
             if(dist[a][j] + dist[j][b] <= (int)1e9){
-                res++;
-                sum+=(dist[a][j] + dist[j][b]);
+                exist = true;
+                mi = min(mi, dist[a][j] + dist[j][b]);
             }
         }
+        if(exist){res++; sum += mi;}
     }
     cout << res << endl << sum;
 

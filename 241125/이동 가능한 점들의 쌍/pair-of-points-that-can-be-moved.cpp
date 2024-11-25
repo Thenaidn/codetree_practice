@@ -32,26 +32,30 @@ int main() {
     for (int i = 1; i <= m; i++) {
         int x, y, z; cin >> x >> y >> z;
         //tie(x, y, z) = edges[i];
-        if (dist[x][y] > z) {
+        
             dist[x][y] = z;
+        
+    }
+
+    for (int k = 1; k <= n; k++) {
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (dist[i][j] > dist[i][k] + dist[k][j]) {
+                    dist[i][j] = dist[i][k] + dist[k][j];
+                }
+            }
         }
     }
 
-    for (int k = 1; k <= n; k++) // 확실하게 거쳐갈 정점을 1번부터 N번까지 순서대로 정의합니다.
-        for (int i = 1; i <= n; i++) // 고정된 k에 대해 모든 쌍 (i, j)를 살펴봅니다.
-            for (int j = 1; j <= n; j++)
-                // i에서 j로 가는 거리가 k를 경유해 가는 것이 더 좋다면
-                // dist[i][j]값을 갱신해줍니다.
-                dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
 
     int res = 0;
-    int sum = 0;
+    long long sum = 0;
     for(int i=0;i<q;i++){
         int a, b; cin >> a >> b;
         bool exist = false;
         int mi = (int)1e9;
         for(int j=1;j<=p;j++){
-            if(dist[a][j] + dist[j][b] <= (int)1e9){
+            if(dist[a][j] < (int)1e9 && dist[j][b] < (int)1e9){
                 exist = true;
                 mi = min(mi, dist[a][j] + dist[j][b]);
             }

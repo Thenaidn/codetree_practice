@@ -1,47 +1,53 @@
 #include <iostream>
 #include <vector>
-#include <queue>
-#include <tuple>
-#include <algorithm>
+
 using namespace std;
 
-struct Edge {
-    int node, weight;
-};
-int b;
-vector<int> adj[100001]; // 인접 리스트
-bool visited[10000] = { false, };
-int n; // 노드의 개수
+vector<int> tree[50]; 
+int deleteNode;
+int leafCount = 0;
 
-int res = 0;
-// 가장 먼 노드를 찾는 BFS
-void dfs(int start) {
-    if (start == b) { return; }
-    res++;
-    visited[start] = true;
-    for (int i : adj[start]) {
-        dfs(i);
+void countLeaves(int node) {
+    if (node == deleteNode) return; // 삭제된 노드는 처리하지 않음
+
+    if (tree[node].empty() || (tree[node].size() == 1 && tree[node][0] == deleteNode)) {
+        
+        leafCount++;
+        return;
     }
 
+    for (int child : tree[node]) {
+        countLeaves(child); 
+    }
 }
 
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
+    int n;
     cin >> n;
-    int start = 0;
-    for (int i = 0; i < n; i++) {
-        int a; cin >> a;
-        if (a == -1) { start = i; }
-        else { adj[a].push_back(i); }
-    }
-    cin >> b;
-    adj[b].clear();
 
-    dfs(start);
-    if(res == 0){res = 1;}
-    cout << res - 1 << "\n";
+    int root = -1;
+    for (int i = 0; i < n; i++) {
+        int parent;
+        cin >> parent;
+
+        if (parent == -1) {
+            root = i;
+        }
+        else {
+            tree[parent].push_back(i);
+        }
+    }
+
+    cin >> deleteNode;
+
+
+    if (root == deleteNode) {
+        cout << 0 << endl;
+    }
+    else {
+        countLeaves(root); // 루트부터 리프 노드 계산 시작
+        cout << leafCount << endl;
+    }
 
     return 0;
 }

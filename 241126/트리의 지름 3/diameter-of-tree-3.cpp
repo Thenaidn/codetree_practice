@@ -47,8 +47,8 @@ pair<int, int> bfs(int start, bool second) {
         }
     }
 
-    if(!second){return {farthestNode, maxDist};}
-    return {secondfarthestNode, secondmaxDist};
+    if (!second) { return { farthestNode, maxDist }; }
+    return { secondfarthestNode, secondmaxDist };
 }
 
 int main() {
@@ -60,17 +60,20 @@ int main() {
     for (int i = 0; i < n - 1; i++) {
         int u, v, w;
         cin >> u >> v >> w;
-        adj[u].push_back({v, w});
-        adj[v].push_back({u, w});
+        adj[u].push_back({ v, w });
+        adj[v].push_back({ u, w });
     }
 
     int farthest = bfs(1, false).first;
-    
+
+    int farthest2 = bfs(farthest, false).first;
+
     int diameter = bfs(farthest, true).second;
 
-    
+    int diameter2 = bfs(farthest2, true).second;
 
-    cout << diameter << "\n";
+
+    cout << max(diameter, diameter2) << "\n";
 
     return 0;
 }

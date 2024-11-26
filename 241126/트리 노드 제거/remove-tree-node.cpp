@@ -40,7 +40,7 @@ int main() {
     adj[b].clear();
 
     dfs(start);
-
+    if(res == 0){res = 1;}
     cout << res - 1 << "\n";
 
     return 0;

@@ -1,81 +1,67 @@
 #include <iostream>
 #include <vector>
-#include <queue>
 #include <tuple>
-#include <algorithm>
-#include <climits>
-#include <map>
+
+#define MAX_N 100000
+
 using namespace std;
 
-struct Edge {
-    int node, weight;
-};
+// 변수 선언:
+int n;
+vector<int> edge[MAX_N + 1];
+bool visited[MAX_N + 1];
+int dist[MAX_N + 1];
+int max_dist;
+int last_node;
 
-vector<Edge> adj[100001]; // 인접 리스트
-int n; // 노드의 개수
+// 모든 노드의 정점을 탐색하는 DFS를 진행합니다.
+void DFS(int x) {
+    visited[x] = true;
 
-map<int, int> points;
+    for(int i = 0; i < edge[x].size(); i++) {
+        int y = edge[x][i];
 
-// 가장 먼 노드를 찾는 BFS
-pair<int, int> bfs(int start) {
-    vector<int> dist(n + 1, -1); // 거리를 -1로 초기화
-    queue<int> q;
+        // 이미 방문한 정점이면 스킵합니다.
+        if(visited[y]) continue;
 
-    q.push(start);
-    dist[start] = 0;
+        dist[y] = dist[x] + 1;
 
-    int farthestNode = start; // 가장 먼 노드
-    int maxDist = 0; // 최대 거리
-
-    while (!q.empty()) {
-        int current = q.front();
-        q.pop();
-
-        for (const auto& edge : adj[current]) {
-            int next = edge.node;
-            int weight = edge.weight;
-
-            if (dist[next] == -1) { // 방문하지 않은 노드
-                dist[next] = dist[current] + weight;
-                q.push(next);
-
-                if (dist[next] > maxDist) {
-                    maxDist = dist[next];
-                    farthestNode = next;
-                }
-            }
+        // 현재 정점을 기준으로 가장 먼 노드를 찾습니다.
+        if(dist[y] > max_dist) {
+            max_dist = dist[y];
+            last_node = y;
         }
-    }
 
-    return { farthestNode, maxDist };
+        DFS(y);
+    }
 }
 
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
+    // 입력:
     cin >> n;
 
-    for (int i = 0; i < n - 1; i++) {
-        int u, v, w;
-        cin >> u >> v;
-        if (points.find(u) == points.end()) { points[u] = 1; }
-        else { points[u]++; }
-        if (points.find(v) == points.end()) { points[v] = 1; }
-        else { points[v]++; }
+    // n - 1개의 간선 정보를 입력받습니다.
+    for(int i = 1; i <= n - 1; i++) {
+        int x, y;
 
-        adj[u].push_back({ v, 1 });
-        adj[v].push_back({ u, 1 });
+        cin >> x >> y;
+
+        edge[x].push_back(y);
+        edge[y].push_back(x);
     }
 
-    int res = INT_MAX;
-    for (pair<int, int> i : points) {
-        res = min(res, bfs(i.first).second);
+    // DFS를 통해 가장 먼 노드를 찾습니다.
+    DFS(1);
+
+    // 가장 먼 노드에서 시작해 다시 한번 DFS를 돌려 트리의 가장 긴 거리를 찾습니다.
+    for(int i = 1; i <= n; i++) {
+        visited[i] = false;
+        dist[i] = 0;
     }
 
+    DFS(last_node);
 
-
-    cout << res << "\n";
-
+    // 거리의 중간값을 출력합니다.
+    cout << (max_dist + 1) / 2;
     return 0;
 }

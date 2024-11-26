@@ -70,10 +70,12 @@ int main() {
     }
     for (int i = 0; i < m; i++) {
         int a, b; cin >> a >> b;
+        if(a != b){
+            dfs(a, b, 0);
 
-        dfs(a, b, 0);
-
-        for (int i = 0; i < 10001; i++) { visited[i] = false; }
+            for (int i = 0; i < 10001; i++) { visited[i] = false; }
+        }
+        
         cout << dst << endl; 
         dst = 0;
     }

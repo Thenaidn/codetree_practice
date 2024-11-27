@@ -3,67 +3,47 @@
 #include <queue>
 using namespace std;
 
-map<char, int> m;
-char tree[10000] = { '.', };
-int cnt = 0;
+map<char, pair<char, char>> tree; // 각 노드와 자식 노드 정보 저장
 
-void preorder(int n) {
-    if (tree[n] < 'A' || tree[n] > 'Z') return; // 유효하지 않은 노드면 리턴
-    cout << tree[n]; // 루트
-    preorder(n * 2); // 왼쪽
-    preorder(n * 2 + 1); // 오른쪽
+// 전위 순회 (Preorder)
+void preorder(char node) {
+    if (node == '.') return; // 유효하지 않은 노드면 리턴
+    cout << node;            // 루트
+    preorder(tree[node].first);  // 왼쪽 자식
+    preorder(tree[node].second); // 오른쪽 자식
 }
 
-void inorder(int n) {
-    if (tree[n] < 'A' || tree[n] > 'Z') return;
-    inorder(n * 2); // 왼쪽
-    cout << tree[n]; // 루트
-    inorder(n * 2 + 1); // 오른쪽
+// 중위 순회 (Inorder)
+void inorder(char node) {
+    if (node == '.') return;
+    inorder(tree[node].first);  // 왼쪽 자식
+    cout << node;               // 루트
+    inorder(tree[node].second); // 오른쪽 자식
 }
 
-void postorder(int n) {
-    if (tree[n] < 'A' || tree[n] > 'Z') return;
-    postorder(n * 2); // 왼쪽
-    postorder(n * 2 + 1); // 오른쪽
-    cout << tree[n]; // 루트
+// 후위 순회 (Postorder)
+void postorder(char node) {
+    if (node == '.') return;
+    postorder(tree[node].first);  // 왼쪽 자식
+    postorder(tree[node].second); // 오른쪽 자식
+    cout << node;                 // 루트
 }
 
 int main() {
-    // 여기에 코드를 작성해주세요.
+    int n;
+    cin >> n;
 
-
-    int n; cin >> n;
-    map<char, pair<char, char>> ma;
+    // 트리 정보 입력
     for (int i = 0; i < n; i++) {
-        char a, b, c;
-        cin >> a >> b >> c;
-        ma.insert({ a,{b,c} });
-    }
-    tree[1] = 'A'; m['A'] = 1;
-
-    
-    queue<char> q; q.push('A');
-    while (!q.empty()) {
-        char next = q.front(); q.pop();
-        char b, c;
-        b = ma[next].first; c = ma[next].second;
-        int tmp = m[next];
-        if (b >= 'A' && b <= 'Z') {
-            tree[tmp * 2] = b;
-            m[b] = tmp * 2;
-            q.push(b);
-        }
-        if (c >= 'A' && c <= 'Z') {
-            tree[tmp * 2 + 1] = c;
-            m[c] = tmp * 2 + 1;
-            q.push(c);
-        }
-        
+        char node, left, right;
+        cin >> node >> left >> right;
+        tree[node] = { left, right };
     }
 
-    preorder(1); cout << endl; cnt = 0;
-    inorder(1); cout << endl; cnt = 0;
-    postorder(1); cout << endl; cnt = 0;
+    // 순회 결과 출력
+    preorder('A'); cout << endl; // 루트는 항상 'A'
+    inorder('A'); cout << endl;
+    postorder('A'); cout << endl;
 
     return 0;
 }

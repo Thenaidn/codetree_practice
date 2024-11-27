@@ -1,5 +1,6 @@
 #include <iostream>
 #include <map>
+#include <queue>
 using namespace std;
 
 map<char, int> m;
@@ -32,20 +33,32 @@ int main() {
 
 
     int n; cin >> n;
-
-    tree[1] = 'A'; m['A'] = 1;
+    map<char, pair<char, char>> ma;
     for (int i = 0; i < n; i++) {
         char a, b, c;
         cin >> a >> b >> c;
-        int tmp = m[a];
+        ma.insert({ a,{b,c} });
+    }
+    tree[1] = 'A'; m['A'] = 1;
+
+    
+    queue<char> q; q.push('A');
+    while (!q.empty()) {
+        char next = q.front(); q.pop();
+        char b, c;
+        b = ma[next].first; c = ma[next].second;
+        int tmp = m[next];
         if (b >= 'A' && b <= 'Z') {
             tree[tmp * 2] = b;
             m[b] = tmp * 2;
+            q.push(b);
         }
         if (c >= 'A' && c <= 'Z') {
             tree[tmp * 2 + 1] = c;
             m[c] = tmp * 2 + 1;
+            q.push(c);
         }
+        
     }
 
     preorder(1); cout << endl; cnt = 0;

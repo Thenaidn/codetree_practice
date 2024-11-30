@@ -4,16 +4,16 @@
 
 using namespace std;
 
-const int n = 8;
+const int n = 10008;
 
 vector<int> edges[n + 1];
 bool visited[n + 1];
 
 int parent[n + 1];
 
-int start_points[n] = {-1, 1, 1, 1, 2, 2, 2, 4};
-int end_points[n] = {-1, 4, 7, 6, 6, 3, 5, 8};
-int arr[n + 1] = {0, 6, 10, 3, 3, 4, 2, 6, 2};
+int start_points[n] = { -1, 1, 1, 1, 2, 2, 2, 4 };
+int end_points[n] = { -1, 4, 7, 6, 6, 3, 5, 8 };
+int arr[n + 1] = { 0, 6, 10, 3, 3, 4, 2, 6, 2 };
 
 int dp[n + 1][2];
 
@@ -40,7 +40,7 @@ void DFS(int x) {
 
 int main() {
     int n; cin >> n;
-    for(int i=1;i<=n;i++){cin >> arr[i];}
+    for (int i = 1; i <= n; i++) { cin >> arr[i]; }
     for (int i = 1; i <= n - 1; i++) {
         int x; int y;
         cin >> x >> y;

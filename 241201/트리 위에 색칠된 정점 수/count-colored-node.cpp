@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
-#include <cstring> // memset 사용을 위해 추가
-#include <set>
+#include <cstring>
+#include <unordered_map>
 using namespace std;
 
 const int MAXN = 100001; // 최대 노드 수
@@ -10,7 +10,7 @@ vector<int> tree[MAXN];
 int parent[MAX_H][MAXN]; // 부모 정보
 int depth[MAXN];         // 깊이 정보
 bool visited[MAXN];      // 방문 여부
-set<int> painted;
+unordered_map<int, bool> painted; // 색칠된 노드 정보
 
 // DFS를 통해 깊이와 1차 부모 설정
 void dfs(int node, int d) {
@@ -48,6 +48,35 @@ int findLCA(int a, int b) {
     return parent[0][a];
 }
 
+// 경로 상의 색칠된 노드 수 계산
+int countPaintedOnPath(int u, int v, int lca) {
+    unordered_map<int, bool> seen;
+    int count = 0;
+
+    // 경로 u -> lca
+    while (u != lca) {
+        if (painted[u] && !seen[u]) {
+            count++;
+            seen[u] = true;
+        }
+        u = parent[0][u];
+    }
+
+    // 경로 v -> lca
+    while (v != lca) {
+        if (painted[v] && !seen[v]) {
+            count++;
+            seen[v] = true;
+        }
+        v = parent[0][v];
+    }
+
+    // lca 처리
+    if (painted[lca] && !seen[lca]) count++;
+
+    return count;
+}
+
 int main() {
     int n;
     cin >> n;
@@ -65,11 +94,16 @@ int main() {
     memset(depth, 0, sizeof(depth));
     memset(visited, false, sizeof(visited));
 
-    int k; cin >> k;
-    while(k--){
-        int a; cin >> a; painted.insert(a);
+    // 색칠된 노드 입력
+    int k;
+    cin >> k;
+    for (int i = 0; i < k; i++) {
+        int a;
+        cin >> a;
+        painted[a] = true;
     }
 
+    // DFS로 깊이 및 1차 부모 설정
     dfs(1, 0);
 
     // 2^h 부모 정보 설정
@@ -84,22 +118,12 @@ int main() {
     int q;
     cin >> q;
     while (q--) {
-        int cnt = 0;
         int u, v;
         cin >> u >> v;
         int lca = findLCA(u, v);
-        
-        while(u != lca){
-            if(painted.find(u) != painted.end()){cnt++;}
-            u = parent[0][u];
-        }
-        while(v != lca){
-            if(painted.find(v) != painted.end()){cnt++;}
-            v = parent[0][v];
-        }
-        if(painted.find(lca) != painted.end()){cnt++;}
 
-        cout << cnt << endl;
+        // 경로 상의 색칠된 노드 수 계산
+        cout << countPaintedOnPath(u, v, lca) << endl;
     }
 
     return 0;

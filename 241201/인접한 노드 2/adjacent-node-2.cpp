@@ -19,7 +19,32 @@ int dp[n + 1][2];
 
 vector<int> selected;
 
-
+void track_selected_nodes(int x, bool is_parent_selected) {
+    if (is_parent_selected) {
+        // 부모 노드가 선택된 경우, 현재 노드는 선택 불가
+        for (int y : edges[x]) {
+            if (y != parent[x]) {
+                track_selected_nodes(y, false);
+            }
+        }
+    } else {
+        // 부모 노드가 선택되지 않은 경우
+        if (dp[x][1] > dp[x][0]) {
+            selected.push_back(x);  // 현재 노드 선택
+            for (int y : edges[x]) {
+                if (y != parent[x]) {
+                    track_selected_nodes(y, true);
+                }
+            }
+        } else {
+            for (int y : edges[x]) {
+                if (y != parent[x]) {
+                    track_selected_nodes(y, false);
+                }
+            }
+        }
+    }
+}
 
 void DFS(int x) {
     
@@ -42,7 +67,7 @@ void DFS(int x) {
         dp[x][1] += dp[y][0];
     }
     if (dp[x][1] >= dp[x][0]) {
-        selected.push_back(x); 
+        //selected.push_back(x); 
     }
 }
 
@@ -62,7 +87,7 @@ int main() {
     
     cout << max(dp[start_points[1]][0], dp[start_points[1]][1]) << endl;
 
-    //track_selected_nodes(start_points[1], false);
+    track_selected_nodes(start_points[1], false);
     sort(selected.begin(), selected.end());
     for(int i : selected){cout << i << " ";}
     

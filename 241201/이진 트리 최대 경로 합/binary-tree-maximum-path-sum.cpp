@@ -44,13 +44,18 @@ int main() {
     for(int i=1;i<=n;i++){
         cin >> dp[i];
     }
-    dfs(1, 0);
-    res = 0;
-    for(int i=0;i<=100000;i++){visited[i] = false;}
-    dfs(m, 0);
+    int sm = 0;
+    for(int i=1;i<=n;i++){
+        dfs(i, 0);
+        sm = max(res, sm);
+        res = 0;
+        for(int i=0;i<=30000;i++){visited[i] = false;}
+
+    }
+    
 
 
-    cout << res;
+    cout << sm;
 
     
 

@@ -17,19 +17,19 @@ int arr[n + 1] = { 0, 6, 10, 3, 3, 4, 2, 6, 2 };
 
 int dp[n + 1][2];
 
-vector<int> selected[2];
+vector<int> selected;
 
-void DFS(int x, int num) {
-    if(num == 1){selected[0].push_back(x);}
-    else{selected[1].push_back(x);}
+
+
+void DFS(int x) {
+    
     for (int i = 0; i < (int)edges[x].size(); i++) {
         int y = edges[x][i];
         if (!visited[y]) {
             visited[y] = true;
             parent[y] = x;
 
-            if(num==1){DFS(y, 0);}
-            else{DFS(y, 1);}
+            DFS(y);
         }
     }
     dp[x][0] = 0; // 색칠하지 않는 경우에 대한 초기값입니다.
@@ -40,6 +40,9 @@ void DFS(int x, int num) {
             continue;
         dp[x][0] += max(dp[y][0], dp[y][1]);
         dp[x][1] += dp[y][0];
+    }
+    if (dp[x][1] >= dp[x][0]) {
+        selected.push_back(x); 
     }
 }
 
@@ -55,17 +58,14 @@ int main() {
     }
 
     visited[start_points[1]] = true;
-    DFS(start_points[1], 0);
-    if(dp[start_points[1]][0] > dp[start_points[1]][1]){
-        cout << dp[start_points[1]][0] << endl;
-        sort(selected[0].begin(), selected[0].end());
-        for(int i: selected[0]){cout << i <<  " ";}
-    }
-    else{
-        cout << dp[start_points[1]][1] << endl;
-        sort(selected[1].begin(), selected[1].end());
-        for(int i: selected[1]){cout << i <<  " ";}
-    }
+    DFS(start_points[1]);
+    
+    cout << max(dp[start_points[1]][0], dp[start_points[1]][1]) << endl;
+
+    //track_selected_nodes(start_points[1], false);
+    sort(selected.begin(), selected.end());
+    for(int i : selected){cout << i << " ";}
+    
     // dp[1][0], dp[1][1] 중 최댓값을 출력합니다.
    // cout << max(dp[start_points[1]][0], dp[start_points[1]][1]);
     return 0;

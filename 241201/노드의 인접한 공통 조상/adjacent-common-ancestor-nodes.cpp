@@ -25,12 +25,12 @@ void dfs(int node, int d) {
 // LCA 계산
 int findLCA(int u, int v) {
     // u와 v의 깊이를 동일하게 맞추기
-    while (depth[u] > depth[v]) {
+    while(depth[u] != depth[v]) {
+    if(depth[u] > depth[v])
         u = parent[u];
-    }
-    while (depth[v] > depth[u]) {
+    else
         v = parent[v];
-    }
+}
 
     // 공통 조상을 찾을 때까지 부모로 이동
     while (u != v) {

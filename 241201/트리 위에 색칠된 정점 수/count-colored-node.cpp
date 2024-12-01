@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <set>
+#include <algorithm>
 using namespace std;
 
 const int MAX_N = 100000;
@@ -9,10 +10,12 @@ const int LOG = 17; // log2(MAX_N) ≈ 16.6
 vector<int> tree[MAX_N + 1];
 int parent[MAX_N + 1][LOG + 1];
 int depth[MAX_N + 1];
+int in_time[MAX_N + 1], out_time[MAX_N + 1], euler_time = 0;
 set<int> colored_nodes;
 
-// DFS로 깊이 및 부모 정보 초기화
+// DFS로 깊이 및 Euler Tour 시간 기록
 void dfs(int node, int par) {
+    in_time[node] = ++euler_time;
     parent[node][0] = par;
     depth[node] = depth[par] + 1;
     for (int child : tree[node]) {
@@ -20,6 +23,7 @@ void dfs(int node, int par) {
             dfs(child, node);
         }
     }
+    out_time[node] = euler_time;
 }
 
 // LCA 전처리
@@ -33,7 +37,7 @@ void preprocess(int n) {
     }
 }
 
-// 두 노드의 LCA를 계산
+// LCA 계산
 int find_lca(int u, int v) {
     if (depth[u] < depth[v]) swap(u, v);
     int diff = depth[u] - depth[v];
@@ -53,7 +57,7 @@ int find_lca(int u, int v) {
     return parent[u][0];
 }
 
-// 두 노드 간 경로에서 색칠된 노드 개수 계산
+// 트리 경로에서 색칠된 노드의 개수 계산
 int count_colored_on_path(int u, int v) {
     set<int> path_nodes;
     int lca = find_lca(u, v);

@@ -1,117 +1,112 @@
 #include <iostream>
 #include <vector>
-#include <cstring>
-#include <unordered_map>
+#include <set>
 using namespace std;
 
-const int MAXN = 100001; // 최대 노드 수
-const int MAX_H = 17;   // 2^16 > 50000, LCA를 계산할 수 있는 최대 깊이
-vector<int> tree[MAXN];
-int parent[MAX_H][MAXN]; // 부모 정보
-int depth[MAXN];         // 깊이 정보
-bool visited[MAXN];      // 방문 여부
-unordered_map<int, bool> painted; // 색칠된 노드 정보
+const int MAX_N = 100000;
+const int LOG = 17; // log2(MAX_N) ≈ 16.6
 
-// DFS를 통해 깊이와 1차 부모 설정
-void dfs(int node, int d) {
-    visited[node] = true;
-    depth[node] = d;
+vector<int> tree[MAX_N + 1];
+int parent[MAX_N + 1][LOG + 1];
+int depth[MAX_N + 1];
+set<int> colored_nodes;
 
+// DFS로 깊이 및 부모 정보 초기화
+void dfs(int node, int par) {
+    parent[node][0] = par;
+    depth[node] = depth[par] + 1;
     for (int child : tree[node]) {
-        if (!visited[child]) {
-            parent[0][child] = node; // 1차 부모 설정
-            dfs(child, d + 1);       // 자식으로 이동
+        if (child != par) {
+            dfs(child, node);
         }
     }
 }
 
-// LCA 계산
-int findLCA(int a, int b) {
-    // 깊이를 동일하게 맞추기
-    if (depth[a] < depth[b]) swap(a, b);
-    for (int h = MAX_H - 1; h >= 0; h--) {
-        if (depth[a] - depth[b] >= (1 << h))
-            a = parent[h][a];
-    }
-
-    // 공통 조상을 찾을 때까지 부모로 이동
-    if (a == b) return a;
-
-    for (int h = MAX_H - 1; h >= 0; h--) {
-        if (parent[h][a] != parent[h][b]) {
-            a = parent[h][a];
-            b = parent[h][b];
+// LCA 전처리
+void preprocess(int n) {
+    for (int j = 1; j <= LOG; j++) {
+        for (int i = 1; i <= n; i++) {
+            if (parent[i][j - 1] != -1) {
+                parent[i][j] = parent[parent[i][j - 1]][j - 1];
+            }
         }
     }
-
-    // 최종 공통 조상 반환
-    return parent[0][a];
 }
 
-// 경로 상의 색칠된 노드 수 계산
-int countPaintedOnPath(int u, int v, int lca) {
-    unordered_map<int, bool> seen;
-    int count = 0;
+// 두 노드의 LCA를 계산
+int find_lca(int u, int v) {
+    if (depth[u] < depth[v]) swap(u, v);
+    int diff = depth[u] - depth[v];
+    for (int i = 0; i <= LOG; i++) {
+        if ((diff >> i) & 1) {
+            u = parent[u][i];
+        }
+    }
+    if (u == v) return u;
 
-    // 경로 u -> lca
+    for (int i = LOG; i >= 0; i--) {
+        if (parent[u][i] != parent[v][i]) {
+            u = parent[u][i];
+            v = parent[v][i];
+        }
+    }
+    return parent[u][0];
+}
+
+// 두 노드 간 경로에서 색칠된 노드 개수 계산
+int count_colored_on_path(int u, int v) {
+    set<int> path_nodes;
+    int lca = find_lca(u, v);
+
+    // u -> lca 경로
     while (u != lca) {
-        if (painted[u] && !seen[u]) {
-            count++;
-            seen[u] = true;
-        }
-        u = parent[0][u];
+        if (colored_nodes.count(u)) path_nodes.insert(u);
+        u = parent[u][0];
     }
-
-    // 경로 v -> lca
+    // v -> lca 경로
     while (v != lca) {
-        if (painted[v] && !seen[v]) {
-            count++;
-            seen[v] = true;
-        }
-        v = parent[0][v];
+        if (colored_nodes.count(v)) path_nodes.insert(v);
+        v = parent[v][0];
     }
+    // LCA 자체도 확인
+    if (colored_nodes.count(lca)) path_nodes.insert(lca);
 
-    // lca 처리
-    if (painted[lca] && !seen[lca]) count++;
-
-    return count;
+    return path_nodes.size();
 }
 
 int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
     int n;
     cin >> n;
 
-    // 트리 입력
-    for (int i = 0; i < n - 1; i++) {
-        int a, b;
-        cin >> a >> b;
-        tree[a].push_back(b);
-        tree[b].push_back(a);
+    // 트리 입력 처리
+    for (int i = 1; i < n; i++) {
+        int u, v;
+        cin >> u >> v;
+        tree[u].push_back(v);
+        tree[v].push_back(u);
     }
 
     // 초기화
-    memset(parent, 0, sizeof(parent));
-    memset(depth, 0, sizeof(depth));
-    memset(visited, false, sizeof(visited));
+    for (int i = 1; i <= n; i++) {
+        for (int j = 0; j <= LOG; j++) {
+            parent[i][j] = -1;
+        }
+    }
 
-    // 색칠된 노드 입력
+    // DFS 및 LCA 전처리
+    dfs(1, 0);
+    preprocess(n);
+
+    // 색칠된 노드 입력 처리
     int k;
     cin >> k;
     for (int i = 0; i < k; i++) {
-        int a;
-        cin >> a;
-        painted[a] = true;
-    }
-
-    // DFS로 깊이 및 1차 부모 설정
-    dfs(1, 0);
-
-    // 2^h 부모 정보 설정
-    for (int h = 1; h < MAX_H; h++) {
-        for (int i = 1; i <= n; i++) {
-            if (parent[h - 1][i] != 0)
-                parent[h][i] = parent[h - 1][parent[h - 1][i]];
-        }
+        int c;
+        cin >> c;
+        colored_nodes.insert(c);
     }
 
     // 쿼리 처리
@@ -120,10 +115,7 @@ int main() {
     while (q--) {
         int u, v;
         cin >> u >> v;
-        int lca = findLCA(u, v);
-
-        // 경로 상의 색칠된 노드 수 계산
-        cout << countPaintedOnPath(u, v, lca) << endl;
+        cout << count_colored_on_path(u, v) << "\n";
     }
 
     return 0;

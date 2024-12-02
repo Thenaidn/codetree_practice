@@ -40,7 +40,7 @@ int main() {
         }
         else {
             cin >> a;
-            cout << root[uf[a]].size() << endl;
+            cout << root[Find(uf[a])].size() << endl;
         }
     }
     return 0;

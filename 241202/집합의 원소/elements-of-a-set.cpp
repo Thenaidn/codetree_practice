@@ -26,10 +26,12 @@ int main() {
         int q, a, b;
         cin >> q >> a >> b;
         if(q == 0){
-            Union(a,b);
+            if(uf[a] != uf[b]){
+                Union(a,b);
+            }
         }
         else{
-            if(uf[a] == uf[b]){cout << 1 << endl;}
+            if(Find(uf[a]) == Find(uf[b])){cout << 1 << endl;}
             else{cout << 0 << endl;}
         }
     }

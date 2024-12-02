@@ -2,7 +2,7 @@
 #include <unordered_set>
 using namespace std;
 
-#define MAXN 5
+#define MAXN 100005
 
 int uf[MAXN];
 unordered_set<int> root[MAXN];

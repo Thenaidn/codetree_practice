@@ -1,47 +1,53 @@
 #include <iostream>
-#include <unordered_set>
+#include <vector>
 using namespace std;
 
 #define MAXN 100005
 
-int uf[MAXN];
-unordered_set<int> root[MAXN];
+int uf[MAXN], Size[MAXN];
 
 int Find(int x) {
-    if (uf[x] == x) { return x; }
-    int root_node = Find(uf[x]);
-    root[x].erase(x);
-    root[root_node].insert(x);
-    uf[x] = root_node;
-    return root_node;
+    if (x == uf[x]) return x;
+    return uf[x] = Find(uf[x]);
 }
 
 void Union(int x, int y) {
-    int x1 = Find(x); int y1 = Find(y);
-    root[x1].erase(x1);
-    root[y1].insert(x1);
-    uf[x1] = y1;
+    int rootX = Find(x);
+    int rootY = Find(y);
+    if (rootX != rootY) {
+        if (Size[rootX] < Size[rootY]) {
+            swap(rootX, rootY);
+        }
+        uf[rootY] = rootX;
+        Size[rootX] += Size[rootY];
+    }
 }
 
 int main() {
-    // 여기에 코드를 작성해주세요.
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
 
-    int n, m; cin >> n >> m;
-    for (int i = 1; i <= n; i++) { uf[i] = i; root[i].insert(i); }
+    int n, m;
+    cin >> n >> m;
+    for (int i = 1; i <= n; i++) {
+        uf[i] = i;
+        Size[i] = 1;
+    }
 
     while (m--) {
-        char q; int a, b;
-        cin >> q;
-        if (q == 'x') {
+        char op;
+        cin >> op;
+        if (op == 'x') {
+            int a, b;
             cin >> a >> b;
-            if (uf[a] != uf[b]) {
-                Union(a, b);
-            }
+            Union(a, b);
         }
-        else {
+        else if (op == 'y') {
+            int a;
             cin >> a;
-            cout << root[Find(uf[a])].size() << endl;
+            cout << Size[Find(a)] << '\n';
         }
     }
+
     return 0;
 }

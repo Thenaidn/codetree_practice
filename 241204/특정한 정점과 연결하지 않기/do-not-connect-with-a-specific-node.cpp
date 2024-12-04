@@ -9,7 +9,7 @@ int uf[MAXN], Size[MAXN];
 
 bool cmp(pair<int, int> a, pair<int, int> b) {
     if (a.first == b.first) {
-        return a.second > b.second;
+        return a.second < b.second;
     }
     return a.first > b.first;
 }
@@ -66,11 +66,11 @@ int main() {
 
 
     for (int i = 0; i < sizes.size(); i++) {
-        if (sizes[i].second == a) { continue; }
-        if (Find(b) == Find(sizes[i].second)) { continue; }
+        if (Find(sizes[i].second) == Find(a) || 
+        Find(b) == Find(sizes[i].second)) { continue; }
         res += sizes[i].first;
         k--;
-        if (k == 0) { break; }
+        if (k <= 0) {break;}
     }
    
     cout << res;

@@ -12,7 +12,7 @@ bool cmp(pair<int, int> a, pair<int, int> b) {
     if (a.first == b.first) {
         return a.second < b.second;
     }
-    return a.first > b.first;
+    return a.first < b.first;
 }
 
 int Find(int x) {
@@ -51,31 +51,47 @@ int main() {
     unordered_set<int> red; 
     unordered_set<int> white;
 
-    int r1, w1; cin >> r1 >> w1;
+    vector<pair<int, int>> battle;
 
-
-    for (int i = 2; i <= m; i++) {
+    for (int i = 1; i <= m; i++) {
         int a, b; cin >> a >> b;
-        a = Find(a); b = Find(b);
-        if (a == b) { res = 0; break; }
-        else if (a == Find(r1)) {
-            Union(b, w1);
-        }
-        else if (a == Find(w1)) {
-            Union(b, r1);
-        }
-        else if (b == Find(r1)) {
-            Union(a, w1);
-        }
-        else if (b == Find(w1)) {
-            Union(a, r1);
-        }
-        else {
-            Union(a, r1); Union(b, w1);
-        }
-        //Union(i, a);
+        battle.push_back({ a, b });
     }
 
+    for (auto i : battle) {
+        if (i.first > i.second) {
+            swap(i.second, i.first);
+        }
+    }
+
+    sort(battle.begin(), battle.end(), cmp);
+
+    for (auto i : battle) {
+        if (red.size() == 0) {
+            red.insert(i.first); 
+            white.insert(i.second);
+            continue;
+        }
+        int a = i.first; int b = i.second;
+        if ((red.find(a) != red.end() && red.find(b) != red.end()) ||
+            (white.find(a) != white.end() && white.find(b) != white.end())) {
+            res = 0; break;
+        }
+
+        if (red.find(a) != red.end()) {
+            white.insert(b);
+        }
+        else if (white.find(a) != white.end()) {
+            red.insert(b);
+        }
+        else if (red.find(b) != red.end()) {
+            white.insert(a);
+        }
+        else if (white.find(b) != white.end()) {
+            red.insert(a);
+        }
+        
+    }
     //int a, b, k; cin >> a >> b >> k;
 
 

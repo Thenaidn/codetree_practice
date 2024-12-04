@@ -52,25 +52,26 @@ int main() {
     unordered_set<int> white;
 
     int r1, w1; cin >> r1 >> w1;
-    red.insert(r1); white.insert(w1);
+
+
     for (int i = 2; i <= m; i++) {
         int a, b; cin >> a >> b;
-        if (Find(a) == Find(b)) { res = 0; break; }
-        if (red.find(a) != red.end()) {
+        a = Find(a); b = Find(b);
+        if (a == b) { res = 0; break; }
+        else if (a == Find(r1)) {
             Union(b, w1);
-            white.insert(b);
         }
-        if (white.find(a) != white.end()) {
+        else if (a == Find(w1)) {
             Union(b, r1);
-            red.insert(b);
         }
-        if (red.find(b) != red.end()) {
+        else if (b == Find(r1)) {
             Union(a, w1);
-            white.insert(a);
         }
-        if (white.find(b) != white.end()) {
+        else if (b == Find(w1)) {
             Union(a, r1);
-            red.insert(a);
+        }
+        else {
+            Union(a, r1); Union(b, w1);
         }
         //Union(i, a);
     }

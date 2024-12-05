@@ -56,8 +56,9 @@ int main() {
         if(Find(v[idx].second.first) != Find(v[idx].second.second)){
             res += v[idx].first;
             Union(v[idx].second.first, v[idx].second.second);
-            idx++; cnt++; 
+            cnt++; 
         }
+        idx++;
     }
 
     cout << res;

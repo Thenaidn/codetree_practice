@@ -4,18 +4,24 @@
 #include <cmath>
 using namespace std;
 
-#define MAXN 100005
+#define MAXN 205
 
 int uf[MAXN], Size[MAXN];
 
-double dist(double x1, double y1, double x2, double y2){
-    return sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)); 
+struct Edge {
+    double weight;
+    int u, v;
+    bool operator<(const Edge &other) const {
+        return weight < other.weight;
+    }
+};
+
+// 유클리드 거리 계산
+double dist(double x1, double y1, double x2, double y2) {
+    return sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 }
 
-bool cmp(pair<double, pair<int, int>> a, pair<double, pair<int, int>> b){
-    return a.first < b.first;
-}
-
+// Union-Find
 int Find(int x) {
     if (x == uf[x]) return x;
     return uf[x] = Find(uf[x]);
@@ -25,9 +31,7 @@ void Union(int x, int y) {
     int rootX = Find(x);
     int rootY = Find(y);
     if (rootX != rootY) {
-        if (Size[rootX] < Size[rootY]) {
-            swap(rootX, rootY);
-        }
+        if (Size[rootX] < Size[rootY]) swap(rootX, rootY);
         uf[rootY] = rootX;
         Size[rootX] += Size[rootY];
     }
@@ -39,46 +43,48 @@ int main() {
 
     int n, m;
     cin >> n >> m;
-    vector<pair<int, pair<int, int>>> points;
-    for (int i = 1; i <= n; i++) {
+
+    vector<pair<int, int>> points(n);
+    vector<Edge> edges;
+
+    // 좌표 입력
+    for (int i = 0; i < n; i++) {
+        cin >> points[i].first >> points[i].second;
+    }
+
+    // 이미 존재하는 간선
+    for (int i = 0; i < n; i++) {
         uf[i] = i;
-        int a, b; cin >> a >> b;
-        points.push_back({i, {a, b}});
+        Size[i] = 1;
     }
 
-    vector<pair<double, pair<int, int>>> v;
-    
-    for(int i=0;i<n;i++){
-        for(int j=0;j<n;j++){
-            if(i == j){continue;}
-            int distance = dist(points[i].second.first, points[i].second.second, 
-            points[j].second.first, points[j].second.second);
-            v.push_back({distance, {points[i].first, points[j].first}});
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+        Union(u - 1, v - 1); // 이미 연결된 간선 처리
+    }
+
+    // 모든 간선 추가
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) { // 중복 제거
+            double d = dist(points[i].first, points[i].second,
+                            points[j].first, points[j].second);
+            edges.push_back({d, i, j});
         }
     }
-    
-    sort(v.begin(), v.end(), cmp);
 
+    // 간선을 가중치 순으로 정렬
+    sort(edges.begin(), edges.end());
 
-    for (int i=0;i<m;i++) {
-        int a, b; Union(a, b);
-    }
-
-    
-
-    double res = 0;
-    int cnt = 0;
-    int idx = 0;
-    while (cnt < n - 1 - m){
-        if(Find(v[idx].second.first) != Find(v[idx].second.second)){
-            res += v[idx].first;
-            Union(v[idx].second.first, v[idx].second.second);
-            cnt++; 
+    // Kruskal's MST
+    double totalCost = 0.0;
+    for (auto &edge : edges) {
+        if (Find(edge.u) != Find(edge.v)) {
+            Union(edge.u, edge.v);
+            totalCost += edge.weight;
         }
-        idx++;
     }
 
-    printf("%.2lf", res);
-
+    printf("%.2f\n", totalCost);
     return 0;
 }

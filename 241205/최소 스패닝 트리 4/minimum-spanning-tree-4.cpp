@@ -62,6 +62,7 @@ int main() {
             cnt++; 
         }
         idx++;
+        if(idx >= v.size()){res = -1; break;}
     }
 
     cout << res;

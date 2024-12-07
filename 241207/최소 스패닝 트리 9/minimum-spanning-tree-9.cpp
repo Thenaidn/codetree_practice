@@ -6,26 +6,18 @@
 using namespace std;
 
 // 변수 선언
-const int n = 5, m = 7;
-vector<pair<int, int> > graph[n + 1];
+#define MAXN 100001
+int n = 100005, m = 7;
+vector<pair<int, int> > graph[MAXN];
 priority_queue<pair<int, int> > pq;
 
-int dist[n + 1];
-bool visited[n + 1];
+int dist[MAXN];
+bool visited[MAXN];
 
 int main() {
     // 주어진 간선 정보 (x, y, z)
     // x <-> y로 향하는 간선이 있으며, 가중치는 z 
-    tuple<int, int, int> edges[] = {
-        make_tuple(-1, -1, -1),
-        make_tuple(2, 1, 2),
-        make_tuple(1, 4, 3),
-        make_tuple(4, 2, 1),
-        make_tuple(5, 2, 4),
-        make_tuple(5, 4, 2),
-        make_tuple(4, 3, 2),
-        make_tuple(1, 3, 6)
-    };
+    cin >> n >> m;
 
     // 그래프를 인접리스트로 표현합니다.
     for(int i = 1; i <= m; i++) {

@@ -75,14 +75,14 @@ int main() {
 
     
 
-    int mi = pow(kruskal(v, 0), 2);
+    long long mi = pow(kruskal(v, 0), 2);
 
     for (int i = 1; i <= n; i++) {
         uf[i] = i;
         Size[i] = 1;
     }
 
-    int ma = pow(kruskal(v, 1), 2);
+    long long ma = pow(kruskal(v, 1), 2);
 
 
 

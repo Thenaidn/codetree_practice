@@ -21,7 +21,7 @@ bool is_blocked[MAX_N + 1];
 int main() {
     // 입력
     cin >> n >> m >> k;
-
+    if(m<=1){cout << 1; return 0;}
     // 그래프를 인접리스트로 표현합니다.
     // 더미 노드(0번 노드)를 만들어서 1번부터 n번까지 노드를 통행증의 비용으로 연결합니다.
     for(int i = 1; i <= n; i++) {

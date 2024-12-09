@@ -19,8 +19,8 @@ int main() {
     for(int i = 1; i <= m; i++) {
         int x, y, z;
         cin >> x >> y >> z;
-        graph[x][y] = z;
-        graph[y][x] = z;
+        graph[x][y] = (graph[x][y] == 0) ? z : min(graph[x][y], z);
+        graph[y][x] = (graph[y][x] == 0) ? z : min(graph[y][x], z);
     }
     
     // 그래프에 있는 모든 노드들에 대해

@@ -4,7 +4,7 @@
 #include <vector>
 
 using namespace std;
-const int MAXN = 10001;
+const int MAXN = 100001;
 // 변수 선언
 // 정점의 수 : 5, 간선의 수 : 7인 그래프
 int n = 5, m = 7;

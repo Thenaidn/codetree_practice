@@ -15,6 +15,7 @@ int dist[MAXN];
 int main() {
 
     cin >> n >> m >> k;
+    if( m <=1){cout << 1; return 0;}
     for (int i = 1; i <= n; i++) {
         for (int j = 1; j <= n; j++) {
             graph[i][j] = (int)1e9;

@@ -1,61 +1,58 @@
 #include <iostream>
 #include <vector>
+#include <queue>
 #include <algorithm>
-#include <stack>
 
 using namespace std;
 
 #define MAXN 100001
 
 int n, m;
-vector<int> edges[MAXN];
-bool visited[MAXN], in_stack[MAXN];
-stack<int> reversed_order;
+vector<int> edges[MAXN];  
+int indegree[MAXN];      
 bool has_cycle = false;
-
-// DFS 탐색
-void DFS(int node) {
-    visited[node] = true;
-    in_stack[node] = true;
-
-    for (int next : edges[node]) {
-        if (!visited[next]) {
-            DFS(next);
-        } else if (in_stack[next]) {
-            has_cycle = true;
-        }
-    }
-
-    in_stack[node] = false;
-    reversed_order.push(node);
-}
 
 int main() {
     cin >> n >> m;
 
+
     for (int i = 0; i < m; i++) {
         int a, b;
         cin >> a >> b;
-        edges[a].push_back(b);
+        edges[a].push_back(b); 
+        indegree[b]++;     
     }
 
-    for (int i = 1; i <= n; i++) {
-        sort(edges[i].begin(), edges[i].end());
-    }
+    priority_queue<int, vector<int>, greater<int>> pq;
 
     for (int i = 1; i <= n; i++) {
-        if (!visited[i]) {
-            DFS(i);
+        if (indegree[i] == 0) {
+            pq.push(i);
         }
     }
 
+    vector<int> result;
+    
 
-    if (has_cycle) {
+    while (!pq.empty()) {
+        int node = pq.top();  
+        pq.pop();
+        result.push_back(node);  
+
+
+        for (int next : edges[node]) {
+            indegree[next]--; 
+            if (indegree[next] == 0) {
+                pq.push(next);  
+            }
+        }
+    }
+
+    if (result.size() != n) {  
         cout << -1 << endl;
     } else {
-        while (!reversed_order.empty()) {
-            cout << reversed_order.top() << " ";
-            reversed_order.pop();
+        for (int i = 0; i < result.size(); i++) {
+            cout << result[i] << " ";
         }
         cout << endl;
     }

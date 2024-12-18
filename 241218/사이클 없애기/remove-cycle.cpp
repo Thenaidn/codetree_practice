@@ -1,72 +1,54 @@
 #include <iostream>
 #include <vector>
 #include <stack>
-#include <queue>
 
 using namespace std;
 
 #define MAXN 100001
 
-int n, m1, m2;
+int n, m;
 vector<int> edges[MAXN];
-int indegree[MAXN] = {0}; // 진입 차수 저장
+bool visited[MAXN] = {false};
+bool in_stack[MAXN] = {false};
 
-bool can_direct_graph() {
-    queue<int> q;
-    int visited_count = 0;
+bool dfs(int node) {
+    visited[node] = true;
+    in_stack[node] = true;
 
-    // 초기 진입 차수가 0인 노드를 큐에 추가
-    for (int i = 1; i <= n; i++) {
-        if (indegree[i] == 0) {
-            q.push(i);
+    for (int next : edges[node]) {
+        if (!visited[next]) {
+            if (dfs(next)) {
+                return true;
+            }
+        } else if (in_stack[next]) {
+            return true;
         }
     }
 
-    // 위상 정렬
-    while (!q.empty()) {
-        int current = q.front();
-        q.pop();
-        visited_count++;
+    in_stack[node] = false;
+    return false;
+}
 
-        for (int next : edges[current]) {
-            indegree[next]--;
-            if (indegree[next] == 0) {
-                q.push(next);
+int main() {
+    int o;
+    cin >> n >> m >> o;
+
+    for (int i = 0; i < m; i++) {
+        int a, b;
+        cin >> a >> b;
+        edges[a].push_back(b);
+    }
+
+
+    for (int i = 1; i <= n; i++) {
+        if (!visited[i]) {
+            if (dfs(i)) {
+                cout << "No" << endl;
+                return 0;
             }
         }
     }
 
-    // 방문한 노드 수가 전체 노드 수와 같으면 사이클이 없음
-    return visited_count == n;
-}
-
-int main() {
-    cin >> n >> m1 >> m2;
-
-    // 단방향 간선 추가
-    for (int i = 0; i < m1; i++) {
-        int a, b;
-        cin >> a >> b;
-        edges[a].push_back(b);
-        indegree[b]++;
-    }
-
-    // 양방향 간선 처리
-    for (int i = 0; i < m2; i++) {
-        int a, b;
-        cin >> a >> b;
-
-        // 양방향 간선을 단방향 간선으로 설정 (a->b)
-        edges[a].push_back(b);
-        indegree[b]++;
-    }
-
-    // 사이클이 없는지 판단
-    if (can_direct_graph()) {
-        cout << "Yes" << endl;
-    } else {
-        cout << "No" << endl;
-    }
-
+    cout << "Yes" << endl;
     return 0;
 }

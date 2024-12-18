@@ -1,68 +1,64 @@
 #include <iostream>
 #include <vector>
-#include <tuple>
+#include <algorithm>
 #include <stack>
 
 using namespace std;
+
 #define MAXN 100001
-// 정점 7개, 간선 8개인 그래프
-int n = 7, m = 8;
 
+int n, m;
 vector<int> edges[MAXN];
-bool visited[MAXN];
+bool visited[MAXN], in_stack[MAXN];
 stack<int> reversed_order;
+bool has_cycle = false;
 
-int cnt = 0;
+// DFS 탐색
+void DFS(int node) {
+    visited[node] = true;
+    in_stack[node] = true;
 
-// DFS 탐색을 진행합니다.
-void DFS(int x) {
-    cnt++;
-    // x에서 갈 수 있는 모든 곳을 탐색합니다.
-    // 단, 방문한 적이 없는 경우에만 진행합니다.
-    for(int i = 0; i < (int) edges[x].size(); i++) {
-        int y = edges[x][i];
-
-        if(!visited[y]) {
-            visited[y] = true;
-            DFS(y);
+    for (int next : edges[node]) {
+        if (!visited[next]) {
+            DFS(next);
+        } else if (in_stack[next]) {
+            has_cycle = true;
         }
     }
 
-    // 퇴각 직전에
-    // 현재 노드 번호를 stack에 넣어줍니다.
-    reversed_order.push(x);
+    in_stack[node] = false;
+    reversed_order.push(node);
 }
 
 int main() {
-
     cin >> n >> m;
-    // 인접리스트로 관리합니다.
-    for(int i = 1; i <= m; i++) {
-        int x, y;
-        cin >> x >> y;
-        //tie(x, y) = given_edges[i];
 
-        edges[x].push_back(y);   
+    for (int i = 0; i < m; i++) {
+        int a, b;
+        cin >> a >> b;
+        edges[a].push_back(b);
     }
 
-    // DFS 탐색을 진행합니다.
-    // 단, 방문표시가 되지 않은 모든 곳을 시작으로 하여
-    // DFS를 진행해야 합니다.
-    for(int i = 1; i <= n; i++) {
-        if(!visited[i]) {
-            visited[i] = true;
+    for (int i = 1; i <= n; i++) {
+        sort(edges[i].begin(), edges[i].end());
+    }
+
+    for (int i = 1; i <= n; i++) {
+        if (!visited[i]) {
             DFS(i);
         }
     }
-    if(cnt >= n){
-        cout << -1;
-    }
-    else{
-        while(!reversed_order.empty()) {
+
+
+    if (has_cycle) {
+        cout << -1 << endl;
+    } else {
+        while (!reversed_order.empty()) {
             cout << reversed_order.top() << " ";
             reversed_order.pop();
         }
+        cout << endl;
     }
-    
+
     return 0;
 }

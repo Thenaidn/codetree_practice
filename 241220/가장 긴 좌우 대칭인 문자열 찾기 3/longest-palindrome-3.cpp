@@ -2,7 +2,7 @@
 #include <string>
 #include <algorithm>
 
-#define MAX_N 200000
+#define MAX_N 300000
 
 using namespace std;
 
